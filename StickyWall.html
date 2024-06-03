@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reminder App</title>
+    <!-- <link rel="stylesheet" type="text/css" href="styles.css"> -->
+    <style>
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#reminderContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 80%;
+}
+
+.reminder {
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 10px;
+    width: calc(25% - 20px);
+    box-sizing: border-box;
+}
+
+.reminder[data-tag="Urgent"] {
+    background-color: #ffdddd; /* light red */
+}
+
+.reminder[data-tag="Important"] {
+    background-color: #ffe5b4; /* light orange */
+}
+
+.reminder[data-tag="To remember"] {
+    background-color: #d9ffcc; /* light green */
+}
+
+.reminder[data-tag="If you have time"] {
+    background-color: #d9d9ff; /* light blue */
+}
+
+.reminder[data-tag="Optional"] {
+    background-color: #f2f2f2; /* light gray */
+}
+
+#reminderForm {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#reminderForm > div {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    width: 50%;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+#reminderForm input,
+#reminderForm textarea,
+#reminderForm select {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+
+#pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.page {
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+.page.active {
+    font-weight: bold;
+}
+
+#addReminder {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 24px;
+    text-align: center;
+    line-height: 60px;
+    cursor: pointer;
+}
+
+#saveReminder {
+    background-color: #4CAF50; /* green */
+    color: white;
+    margin: 4.5%;
+    width: 40%;
+}
+
+#cancelReminder {
+    background-color: #f44336; /* red */
+    color: white;
+    margin: 2.5%;
+    width: 40%;
+}
+
+.reminder:hover {
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.reminder p {
+    color: #333; /* dark gray */
+}
+
+.reminder span {
+    display: inline-block;
+    background-color: #0000003d; 
+    color: #fff; /* white */
+    border-radius: 3px;
+    padding: 2px 5px;
+    margin-top: 10px;
+    font-size: 0.8em;
+}
+.reminder {
+    border-radius: 5px;
+    padding: 20px;
+    margin: 10px;
+    width: calc(25% - 20px);
+    box-sizing: border-box;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.reminder button {
+    display: inline-block;
+    background-color: #f44336; /* red */
+    color: #fff; /* white */
+    border: none;
+    border-radius: 3px;
+    padding: 5px 10px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+#mod
+{color: #000;}
+
+
+
+.reminder button:hover {
+    background-color: #b71c1c; /* dark red */
+}
+
+    </style>
+</head>
+<body>
+    <button id="addReminder">+</button>
+    <div id="reminderContainer"></div>
+
+    <div id="reminderForm" style="display: none;">
+        <div><h1>Add Reminder</h1>
+            <input type="text" id="title" placeholder="Title">
+            <textarea id="description" placeholder="Description"></textarea>
+            <select id="tag">
+                <option value="Urgent">Urgent</option>
+                <option value="Important">Important</option>
+                <option value="To remember">To remember</option>
+                <option value="If you have time">If you have time</option>
+                <option value="Optional">Optional</option>
+            </select>
+            <button id="saveReminder">Save</button>
+            <button id="cancelReminder">Cancel</button>
+        </div>
+    </div>
+   
+
+    <div id="pagination"></div>
+
+    <script>
+var currentPage = 1;
+var remindersPerPage = 12;
+var editingIndex = null;
+
+document.getElementById('addReminder').addEventListener('click', function() {
+    document.getElementById('reminderForm').style.display = 'flex';
+    editingIndex = null;
+});
+
+document.getElementById('saveReminder').addEventListener('click', function() {
+    var title = document.getElementById('title').value;
+    var description = document.getElementById('description').value;
+    var tag = document.getElementById('tag').value;
+
+    var reminder = {
+        title: title,
+        description: description,
+        tag: tag
+    };
+
+    var reminders = JSON.parse(localStorage.getItem('reminders')) || [];
+    if (editingIndex !== null) {
+        reminders[editingIndex] = reminder;
+    } else {
+        reminders.push(reminder);
+    }
+    localStorage.setItem('reminders', JSON.stringify(reminders));
+
+    document.getElementById('reminderForm').style.display = 'none';
+    displayReminders();
+});
+
+document.getElementById('cancelReminder').addEventListener('click', function() {
+    document.getElementById('reminderForm').style.display = 'none';
+});
+
+function displayReminders() {
+    var reminders = JSON.parse(localStorage.getItem('reminders')) || [];
+    var reminderContainer = document.getElementById('reminderContainer');
+    reminderContainer.innerHTML = '';
+
+    var startIndex = (currentPage - 1) * remindersPerPage;
+    var endIndex = startIndex + remindersPerPage;
+
+    reminders.slice(startIndex, endIndex).forEach(function(reminder, index) {
+        var reminderElement = document.createElement('div');
+        reminderElement.classList.add('reminder');
+        reminderElement.setAttribute('data-tag', reminder.tag);
+        reminderElement.innerHTML = `
+            <h2>${reminder.title}</h2>
+            <p>${reminder.description}</p>
+            <span>${reminder.tag}</span>
+            <br>
+            
+            <button onclick="editReminder(${startIndex + index})">Edit</button>
+            <button onclick="deleteReminder(${startIndex + index})">Delete</button>
+        `;
+        reminderContainer.appendChild(reminderElement);
+    });
+
+    displayPagination(reminders.length);
+}
+
+function displayPagination(totalReminders) {
+    var paginationContainer = document.getElementById('pagination');
+    paginationContainer.innerHTML = '';
+
+    var totalPages = Math.ceil(totalReminders / remindersPerPage);
+
+    for (var i = 1; i <= totalPages; i++) {
+        var pageElement = document.createElement('span');
+        pageElement.classList.add('page');
+        if (i === currentPage) {
+            pageElement.classList.add('active');
+        }
+        pageElement.textContent = i;
+        pageElement.addEventListener('click', function() {
+            currentPage = parseInt(this.textContent);
+            displayReminders();
+        });
+        paginationContainer.appendChild(pageElement);
+    }
+}
+
+function deleteReminder(index) {
+    var reminders = JSON.parse(localStorage.getItem('reminders'));
+    reminders.splice(index, 1);
+    localStorage.setItem('reminders', JSON.stringify(reminders));
+    displayReminders();
+}
+
+function editReminder(index) {
+    var reminders = JSON.parse(localStorage.getItem('reminders'));
+    var reminder = reminders[index];
+
+    document.getElementById('title').value = reminder.title;
+    document.getElementById('description').value = reminder.description;
+    document.getElementById('tag').value = reminder.tag;
+
+    document.getElementById('reminderForm').style.display = 'flex';
+    editingIndex = index;
+}
+
+displayReminders();
+
+
+
+    </script>
+</body>
+</html>

@@ -88,16 +88,24 @@
         .form-container button:hover {
             opacity: 0.8;
         }
+
+        #message {
+    font-size: 20px; /* Increase font size */
+    font-weight: bold; /* Make text bold */
+    color: red; /* Change text color to red */
+    text-align: center;
+  }
     </style>
 
     <div class="left">
         <h1>Taskify</h1>
-        <img src="/Images/photo_2024-05-04_19-19-28.jpg" alt="" style="width: 90%;margin: 0% 0% 0% 5%;">
+        <img src="/Images/photo_2024-05-04_18-46-172.jpg" alt="" style="width: 81%;margin: 0% 0% 0% 10%;">
         <p></p>
     </div>
     <div class="right">
         <div class="rightContent">
-            <div class="form-container">
+            <div class="form-container" style="margin: -17% 0% 0% 20%;">
+                <p id="message"></p>
 
                 <h2>Login</h2>
 
@@ -111,8 +119,9 @@
                 <input type="password" placeholder="Enter Password" name="psw" id="password" required><br>
 
                 <button onclick="checkCredentials()" class="button">Login</button>
+                <p style="text-align: center;"><a href="/welcome.html" style="color: #ffcc00;">Back</a></p></div>
 
-                <p id="message"></p>
+               
             </div>
         </div>
     </div>

@@ -80,6 +80,15 @@
         .form-container button:hover {
             opacity: 0.8;
         }
+
+       
+          #message {
+    font-size: 20px; /* Increase font size */
+    font-weight: bold; /* Make text bold */
+    color: red; /* Change text color to red */
+    text-align: center;
+  }
+        
   </style>
 </head>
 
@@ -87,13 +96,15 @@
   <body>
     <div class="left">
       <h1>Taskify</h1>
-      <img src="/Images/photo_2024-05-04_19-19-28.jpg" alt="" style="width: 90%;margin: 0% 0% 0% 5%;">
+      <img src="/Images/photo_2024-05-04_19-19-28.jpg" alt="" style="width: 81%;margin: 0% 0% 0% 10%;">
       <p></p>
     </div>
     <div class="right">
+      
       <div class="rightContent">
-        <div class="form-container">
-  
+        
+        <div class="form-container" style="margin: -24% 0% 0% 20%;">
+        <p id="message"></p>
         <h2 style="font-size: 200%;">Sign in</h2>
   
         <label for="name"><b>Name</b></label>
@@ -106,26 +117,47 @@
         <input type="password" placeholder="Enter Password" name="psw" id="password" required>
     
         <button onclick="storeCredentials()" class="button">Sign in</button>
+        <p style="text-align: center;"><a href="/welcome.html" style="color: #ffcc00;">Back</a></p></div>
     
         <div style="background-color:#f1f1f1">
-            <span class="psw">Forgot <a href="#">password?</a></span>
+            
         </div>
         </div>
       </div>
     </div>
   
     <script>
-      function storeCredentials() {
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-  
-        localStorage.setItem('name', name);
-        localStorage.setItem('email', email);
-        localStorage.setItem('password', password);
-  
-        window.location.href = "StickyWall.html";
-      }
+function storeCredentials() {
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+
+  // Check if the fields are empty
+  if (!name || !email || !password) {
+    document.getElementById('message').textContent = "All Fields must be filled";
+    return;
+  }
+
+  // Simple email format validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    document.getElementById('message').textContent = "Please enter a valid email address";
+    return;
+  }
+
+  // Check if the credentials already exist
+  if (localStorage.getItem('email') === email) {
+    document.getElementById('message').textContent = "User exists";
+  } else {
+    localStorage.setItem('name', name);
+    localStorage.setItem('email', email);
+    localStorage.setItem('password', password);
+
+    window.location.href = "StickyWall.html";
+  }
+}
+
+
     </script>
   </body>
   

@@ -48,6 +48,10 @@
     .signin {
       color: #ffcc00;
     }
+    .register{
+      display: flex;
+      align-items: center;
+    }
   </style>
 </head>
 
@@ -63,9 +67,31 @@
       <p style="font-size:100%; margin: 0% 0% 5% 10%;">With only the features you need, Taskify is customized for individuals seeking a stress-free way to stay
         focused on their goals, projects, and tasks.</p>
       <button class="button">Get Started</button>
-      <p style="margin: 5% 5% 5% 25%;">Already have an account?<a href="/Signup.html" style="color: #ffcc00;">Sign in</a></p>
+     <div class="register"> <p style="margin: 5% 5% 5% 25%;"><a href="/Login.html" style="color: #ffcc00;">Login</a></p>
+      <p style="margin: 5% 5% 5% 25%;"><a href="/Signup.html" style="color: #ffcc00;">Signup</a></p></div>
     </div>
   </div>
 </body>
 
 </html>
+<script>
+  document.addEventListener('DOMContentLoaded', (event) => {
+    const button = document.querySelector('.button');
+    button.addEventListener('mouseover', function() {
+        button.style.backgroundColor = "#e6b800";
+    });
+    button.addEventListener('mouseout', function() {
+        button.style.backgroundColor = "#ffcc00";
+    });
+});
+document.addEventListener('DOMContentLoaded', (event) => {
+    const button = document.querySelector('.button');
+    button.addEventListener('mouseover', function() {
+        button.style.backgroundColor = "#e6b800";
+    });
+    button.addEventListener('mouseout', function() {
+        button.style.backgroundColor = "#ffcc00";
+    });
+});
+
+</script>

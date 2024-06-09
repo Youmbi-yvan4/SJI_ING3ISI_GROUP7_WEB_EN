@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <style>
+        body {
+            display: flex;
+            font-family: Arial, sans-serif;
+        }
+
+        .left {
+            background-color: #000000;
+            color: white;
+            width: 50%;
+            padding: 20px;
+            height: 90vh;
+            border-radius: 2%;
+            margin: 10px;
+        }
+
+        .rightContent {
+            margin: 30% 10% 0% 10%;
+            ;
+        }
+
+        .right {
+            background-color: rgb(255, 255, 255);
+            width: 50%;
+            padding: 20px;
+            border-radius: 2%;
+            border: 1px solid #dfdfdf;
+            margin: 10px;
+
+        }
+
+        .button {
+            background-color: #ffcc00;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            width: 100%;
+            /* border-radius: 10%; */
+        }
+
+        .signin {
+            color: #ffcc00;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .form-container {
+            width: 300px;
+            margin: 0 auto;
+        }
+
+        .form-container h2 {
+            text-align: center;
+        }
+
+        .form-container input[type="text"],
+        .form-container input[type="password"] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        .form-container button {
+            background-color: #ffcc00;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .form-container button:hover {
+            opacity: 0.8;
+        }
+    </style>
+
+    <div class="left">
+        <h1>Taskify</h1>
+        <img src="/Images/photo_2024-05-04_19-19-28.jpg" alt="" style="width: 90%;margin: 0% 0% 0% 5%;">
+        <p></p>
+    </div>
+    <div class="right">
+        <div class="rightContent">
+            <div class="form-container">
+
+                <h2>Login</h2>
+
+                <label for="uname"><b>Name</b></label>
+                <input type="text" placeholder="Enter Name" name="name" id="name" required><br>
+
+                <label for="uname"><b>Email</b></label>
+                <input type="text" placeholder="Enter Email" name="uname" id="email" required><br>
+
+                <label for="psw"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="psw" id="password" required><br>
+
+                <button onclick="checkCredentials()" class="button">Login</button>
+
+                <p id="message"></p>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        function checkCredentials() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            const storedName = localStorage.getItem('name');
+            const storedEmail = localStorage.getItem('email');
+            const storedPassword = localStorage.getItem('password');
+
+            if (name === storedName && email === storedEmail && password === storedPassword) {
+                // If the credentials match, redirect to the next page
+                window.location.href = "StickyWall.html";
+            } else {
+                // If the credentials don't match, display an error message
+                document.getElementById('message').textContent = "User not found";
+            }
+        }
+    </script>
+
+</body>
+
+</html>

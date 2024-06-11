@@ -1,0 +1,487 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+*{
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    /* ===== Colors ===== */
+    --body-color: #E4E9F7;
+    --sidebar-color:#FFF;
+    --primary-color:#00ffbf;
+    --primary-color-light:#F6F5FF;
+    --toggle-color:#DDD;
+    --text-color:#707070;
+    --text1-color:#000000;
+    --text2-color:#000000;
+    --text-button:#00ffbf;
+    --text-m-color:#000;
+
+/* ===== Transition ===== */
+    --tran-02: all 0.2s ease;
+    --tran-03: all 0.3s ease;
+    --tran-04: all 0.4s ease;
+    --tran-05: all 0.5s ease;
+}
+
+body{
+    height: 100vh;
+    background: var(--body-color);
+    transition: var(--tran-04);
+}
+body.dark{
+    --body-color: #18191A;
+    --sidebar-color:#242526;
+    --primary-color:#3A3B3C;
+    --primary-color-light:#3A3B3C;
+    --toggle-color:#FFF;
+    --text-color:#fff;
+    --text1-color:#0b82f1;
+    --text-button:#0b82f1;
+    --text-m-color:#fff;
+
+}
+/* ======== sidebar ======== */
+.sidebar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 250px;
+    padding: 0px 15px;
+    background: var(--sidebar-color);
+    transition: var(--tran-05);
+    z-index: 100;
+}
+.sidebar.close{
+    width: 88px;
+}
+/* ======== Resuable CSS ======== */
+.sidebar .text1{
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--text-color);
+    transition: var(--tran-04);
+    white-space: nowrap;
+    opacity: 1;
+}
+.sidebar .text2{
+    color: var(--text1-color);
+}
+.sidebar.close .text1{
+   opacity: 0;
+} 
+.sidebar .image{
+    min-width: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* ======== Resuable CSS ======== */
+.sidebar li{
+    height: 20px;
+    /* background: red; */
+    margin-top: 5px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+.sidebar li .icon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 60px;
+    font-size: 20px;
+}
+
+.sidebar li .icon,
+.sidebar li .text1{
+ color: var(--text-color);
+ transition: var(--tran-02);
+}
+.icon{color: var(--text-color);
+    transition: var(--tran-02);
+}
+.sidebar header{
+position: relative;
+}
+
+.sidebar .image-text img{
+    width: 40px;
+    border-radius: 6px;
+    background-color: blue ;
+}
+.sidebar header .image-text{
+    display: flex;
+    align-items: center;
+}
+.sidebar header .toggle{
+    position: absolute;
+    top: 50%;
+    right: -25px;
+    transform: translateY(-50%) rotate(180deg);
+    height: 25px;
+    width: 25px;
+    background: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: var(--sidebar-color);
+    font-size: 22px;
+    transition:  var(--tran-03);
+}
+.sidebar.close header .toggle{
+    transform: translateY(-50%);
+}
+body.dark .sidebar header .toggle{
+    /* transform: rotate(180deg); */
+    color: var(--text-color);
+}
+.sidebar .menu{
+    margin-top: 03px;
+}
+.sidebar .space{
+    margin-bottom: 5px;
+}
+.sidebar .search-box{
+    background: var(--primary-color-light);
+    border-radius: 6px;
+    transition: var(--tran-05);
+    margin-bottom: 10px;
+} 
+.sidebar li a{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: var(--tran-04);
+}
+
+.sidebar li a:hover{
+    background: var(--primary-color);
+}
+.sidebar li a:hover .icon,
+.sidebar li a:hover .text1{
+    color: var(--sidebar-color);
+}
+.sidebar .menu-bar{
+    height: calc(100% - 50px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* background: red; */
+}
+header .image-text .header-text{
+    display: flex;
+    flex-direction: column;
+}
+.header-text .name{
+    font-weight: 500;
+}
+.header-text .profession{
+    margin-top: -2px;
+}
+
+.search-box input{
+    height: 100%;
+    width: 100%;
+    outline: none;
+    border: none;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 400;
+    background: var(--primary-color-light);
+    transition: var(--tran-05);
+    color: var(--text-color);
+}
+.menu h6,
+.menu li{
+    margin-bottom: 05px;
+    margin-top: 05px;
+}
+.menu-bar .mode{
+    position: relative;
+    border-radius: 6px;
+    background: var(--primary-color-light);
+}
+.menu-bar .container button{
+    border-radius: 7px;
+    font-size: 10px;  
+    color: #0b82f1;
+}
+.menu-bar .container button:hover{
+box-shadow: 6px;
+color: var(--text2-color);
+width: 50px; /* Adjust width as needed */
+height: 50px;
+color: var(--primary-color);
+display: block;
+}
+.home button::after {
+    content: "✓👍👌";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    font-size: 3rem;
+    line-height: 1;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.3;
+    color: var(--primary-clr);
+    transform: translateY(-50%);
+  }
+.menu-bar .container{
+    display: flex;
+    font-size: 10px;
+    color: var(--text-color);
+    gap: 3px;
+}
+.menu-bar .content{
+    width: 50px; /* Adjust width as needed */
+    height: 50px; /* Adjust height as needed */
+    border: 1px solid #ddd; /* Optional border */
+    padding: 15px; /* Optional padding */
+    text-align: center; /* Optional text alignment */
+    border-radius: 6px;
+    display: flex;
+
+}
+.menu-bar .content,
+.menu-bar .mode .moon-sun{
+    height: 50px;
+    width: 60px;
+    display: flex;
+    align-items: center
+}
+.menu-bar .mode i{
+    position: absolute;
+    transition: var(--tran-05);
+}
+.menu-bar .mode i.sun{
+    opacity: 0;
+}
+.menu-bar .mode .toggle-switch{
+    position: absolute;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-width: 60px;
+    cursor: pointer;
+    border-radius: 6px;
+    background: var(--primary-color-light);
+    transition: var(--tran-05);
+}
+body.dark .menu-bar .mode i.sun{
+    opacity: 1;
+}
+body.dark .menu-bar .mode i.moon{
+    opacity: 0;
+}
+body.dark .sidebar li a:hover .icon, 
+body.dark .sidebar li a:hover .text{
+    color: var(--text1-color);
+}
+body.dark .switch::before{
+    left: 24px;
+}
+.toggle-switch .switch{
+    position: relative;
+    height: 20px;
+    width: 40px;
+    border-radius: 25px;
+    background: var(--text-button);
+}
+.switch::before{
+    content: '';
+    position: absolute;
+    height: 13px;
+    width: 13px;
+    border-radius: 50%;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    background: var(--sidebar-color);
+    transition: var(--tran-03);
+}
+/* ==== MAIN BODY ===== */
+.home{
+    position: relative;
+    left: 255px;
+    width: calc(95% - 225px);
+    justify-content: space-between;
+    background: var(--body-color);
+    transition: var(--tran-05);
+    color: var(--text-m-color);
+}
+.home .text2{
+    font-size: 20px;
+    font-weight: 500;
+    padding: 10px 20px ;
+    /* background: red; */
+}
+.sidebar.close ~ .home{
+    left: 88px;
+    width: calc(95% - 88px);
+}
+.home .middle{
+    width: 100%;
+    font-family: "Poppins", sans-serif;
+    position: relative;
+    font-size: 20px;
+    font-weight: 500px;
+    left: 18px;
+    padding: 10px 40px;
+    background: var(--primary-color-light);
+    border-radius: 6px;
+    transition: var(--tran-05);
+    margin-bottom: 0px;
+    border: none;
+    outline: none;
+    font-size: 10px;
+}
+.home .middle-head{
+    position: left;
+    font-size: 10px;
+    font-weight: 500px;
+}
+.home .middle button{
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+.home .middle .first{
+    display: flex;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    justify-content: space-between;
+}
+.home .middle input{
+    margin-bottom: 10px;
+    margin-top: 0px;
+}
+/* ======================== middle1 container ================= */
+.middle1{
+    display: flex;
+    margin-top: 15px;
+    width: 104%;
+    justify-content: space-between;
+}
+/* ======================== middle1 home1 ================= */
+.home1{
+    position: relative;
+    left: 0px;
+    width: calc(100% - 0px);
+    background: var(--body-color);
+    transition: var(--tran-05);
+    color: var(--text-m-color);
+}
+/* .home1 .text2{
+    font-size: 30px;
+    font-weight: 600;
+    padding: 10px 10px ;
+    /* background: red;
+} */
+.sidebar.close ~ .home1{
+    left: 88px;
+    width: calc(100% - 88px);
+}
+.home1 .middle{
+    width: 88%;
+    font-family: Poppins, sans-serif;
+    position: relative;
+    font-size: 15px;
+    font-weight: 300px;
+    left: 20px;
+    padding: 10px 40px;
+    background: var(--primary-color-light);
+    border-radius: 6px;
+    transition: var(--tran-05);
+    margin-bottom: 0px;
+    border: none;
+    outline: none;
+    font-size: 10px;
+}
+.home1 .middle-head{
+    position: left;
+    font-size: 30px;
+    font-weight: 500px;
+}
+.home1 .middle button{
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+.home1 .middle .first{
+    display: flex;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    justify-content: space-between;
+}
+.home1 .middle input{
+    margin-bottom: 10px;
+    margin-top: 0px;
+}
+
+/* ======================== middle1 home2 ================= */
+.home2{
+    position: relative;
+    left: -35px;
+    height: 53vh;
+    width: calc(100% - 100px);
+    background: var(--body-color);
+    transition: var(--tran-05);
+    color: var(--text-m-color);
+}
+/* .home2 .text2{
+    font-size: 30px;
+    font-weight: 600;
+    padding: 10px 10px ;
+    /* background: red; 
+}*/
+.sidebar.close ~ .home2{
+    left: 88px;
+    width: calc(100% - 88px);
+}
+.home2 .middle{
+    width: 100%;
+    font-family: Poppins, sans-serif;
+    position: relative;
+    font-size: 15px;
+    font-weight: 300px;
+    left: 0px;
+    padding: 10px 40px;
+    background: var(--primary-color-light);
+    border-radius: 6px;
+    transition: var(--tran-05);
+    margin-bottom: 0px;
+    border: none;
+    outline: none;
+    font-size: 10px;
+}
+.home2 .middle-head{
+    position: left;
+    font-size: 30px;
+    font-weight: 500px;
+}
+.home2 .middle button{
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+.home2 .middle .first{
+    display: flex;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    justify-content: space-between;
+}
+.home2 .middle input{
+    margin-bottom: 10px;
+    margin-top: 0px;
+    
+}

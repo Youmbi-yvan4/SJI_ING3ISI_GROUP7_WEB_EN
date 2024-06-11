@@ -312,6 +312,9 @@ body.dark .switch::before{
     background: var(--sidebar-color);
     transition: var(--tran-03);
 }
+
+
+
 /* ==== MAIN BODY ===== */
 .home{
     position: relative;

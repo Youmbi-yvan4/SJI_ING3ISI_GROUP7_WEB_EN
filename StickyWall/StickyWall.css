@@ -1,15 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+*{
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    /* ===== Colors ===== */
+    --body-color: #E4E9F7;
+    --sidebar-color:#FFF;
+    --primary-color:#00ffbf;
+    --primary-color-light:#F6F5FF;
+    --toggle-color:#DDD;
+    --text-color:#707070;
+    --text1-color:#000000;
+    --text2-color:#000000;
+    --text-button:#00ffbf;
+    --text-m-color:#000;
+
+/* ===== Transition ===== */
+    --tran-02: all 0.2s ease;
+    --tran-03: all 0.3s ease;
+    --tran-04: all 0.4s ease;
+    --tran-05: all 0.5s ease;
+}
+
 body {
+
     font-family: Arial, sans-serif;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     background: #fff9d4;
+    height: 100vh;
+    transition: var(--tran-04);
+}
+.home{
+    position: relative;
+    left: 170px;
+    width: calc(95% - 120px);
+    justify-content: space-between;
+    background: var(--body-color);
+    transition: var(--tran-05);
+    color: var(--text-m-color);
+}
+
+.sidebar.close ~ .home{
+    left: 78px;
+    width: calc(95% - 78px);
 }
 
 #reminderContainer {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    width: 85%;
+    width: 90%;
+    border-radius: 50px;
 }
 
 .reminder {
@@ -73,13 +120,15 @@ body {
     margin-bottom: 10px;
     padding: 10px;
     box-sizing: border-box;
+    border-radius: 50px;
 }
-
 
 #pagination {
     display: flex;
     justify-content: center;
     margin-top: 20px;
+    text-align: center;
+    width: 100%;
 }
 
 .page {

@@ -145,17 +145,24 @@ function storeCredentials() {
     return;
   }
 
+  // Retrieve the users from local storage
+  const users = JSON.parse(localStorage.getItem('users')) || [];
+
   // Check if the credentials already exist
-  if (localStorage.getItem('email') === email) {
+  const existingUser = users.find(user => user.email === email);
+  if (existingUser) {
     document.getElementById('message').textContent = "User exists";
   } else {
-    localStorage.setItem('name', name);
-    localStorage.setItem('email', email);
-    localStorage.setItem('password', password);
+    // Add the new user to the array
+    users.push({ name, email, password });
 
-    window.location.href = "StickyWall.html";
+    // Store the updated array in local storage
+    localStorage.setItem('users', JSON.stringify(users));
+
+    window.location.href = "Login.html";
   }
 }
+
 
 
     </script>

@@ -1,143 +1,141 @@
-// Get the modal
-var modal = document.getElementById("reminderForm");
+var currentPage = 1;
+var remindersPerPage = 8;
+var editingIndex = null;
 
-// Get the button that opens the modal
-var btn = document.getElementById("addReminder");
-
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-
-// When the user clicks the button, open the modal 
-btn.onclick = function() {
-  modal.style.display = "block";
-}
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-  modal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-}
-
-document.getElementById('form').addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    // Get form values
-    var title = document.getElementById('title').value;
-    var description = document.getElementById('description').value;
-    var tag = document.getElementById('tag').value;
-
-    // Create new reminder object
-    var reminder = {
-        title: title,
-        description: description,
-        tag: tag
-    };
-
-    // Get existing reminders from local storage or create new array if none exist
-    var reminders = JSON.parse(localStorage.getItem('reminders')) || [];
-
-    // Add new reminder to reminders array
-    reminders.push(reminder);
-
-    // Save reminders array to local storage
-    localStorage.setItem('reminders', JSON.stringify(reminders));
-
-    // Clear form
-    document.getElementById('form').reset();
-
-    // Close modal
-    modal.style.display = "none";
-
-    // Refresh reminders display
-    displayReminders();
+document.getElementById('addReminder').addEventListener('click', function () {
+  document.getElementById('reminderForm').style.display = 'flex';
+  editingIndex = null;
 });
 
-// function displayReminders() {
-//     // Get reminders from local storage
-//     var reminders = JSON.parse(localStorage.getItem('reminders')) || [];
+document.getElementById('greeting').textContent = localStorage.getItem('currentUser') + "'s Sticky Wall ";
+document.getElementById('clearAll').addEventListener('click', function () {
+  localStorage.removeItem('reminders');
+  displayReminders();
+});
 
-//     // Get container element
-//     var container = document.getElementById('reminderContainer');
+// document.getElementById('logout').addEventListener('click', function () {
+//     // Clear the currentUser from local storage
+//     localStorage.removeItem('currentUser');
 
-//     // Clear existing reminders display
-//     container.innerHTML = '';
+//     // Redirect to Login.html
+//     window.location.href = "Login.html";
+// });
 
-//     // Add each reminder to container
-//     reminders.forEach(function(reminder, index) {
-//         var div = document.createElement('div');
-//         div.classList.add('reminder');
-//         div.style.backgroundColor = getRandomLightColor();
-//         div.innerHTML = '<h2>' + reminder.title + '</h2><p>' + reminder.description + '</p><p>' + reminder.tag + '</p><button onclick="deleteReminder(' + index + ')">Delete</button>';
-//         container.appendChild(div);
-//     });
-// }
+
+document.getElementById('saveReminder').addEventListener('click', function () {
+  var title = document.getElementById('title').value;
+  var description = document.getElementById('description').value;
+  var tag = document.getElementById('tag').value;
+
+  var reminder = {
+    title: title,
+    description: description,
+    tag: tag,
+    currentUser: localStorage.getItem('currentUser')
+  };
+
+  var reminders = JSON.parse(localStorage.getItem('reminders')) || [];
+  if (editingIndex !== null) {
+    reminders[editingIndex] = reminder;
+  } else {
+    reminders.push(reminder);
+  }
+  localStorage.setItem('reminders', JSON.stringify(reminders));
+
+  document.getElementById('reminderForm').style.display = 'none';
+  displayReminders();
+});
+
+document.getElementById('cancelReminder').addEventListener('click', function () {
+  document.getElementById('reminderForm').style.display = 'none';
+});
+
 function displayReminders() {
   var reminders = JSON.parse(localStorage.getItem('reminders')) || [];
-  var html = '';
-  for (var i = 0; i < reminders.length; i++) {
-      var color = getColorBasedOnTag(reminders[i].tag);
-      html += '<div class="card" style="background-color: ' + color + '">';
-      html += '<h2>' + reminders[i].title + '</h2>';
-      html += '<p>' + reminders[i].description + '</p>';
-      html += '<button onclick="deleteReminder(' + i + ')">Delete</button>';
-      html += '</div>';
-  }
-  document.getElementById('reminders').innerHTML = html;
+  var currentUser = localStorage.getItem('currentUser'); // Get the current user
+
+  // Filter the reminders to only include those created by the current user
+  var userReminders = reminders.filter(reminder => reminder.currentUser === currentUser);
+
+  var reminderContainer = document.getElementById('reminderContainer');
+  reminderContainer.innerHTML = '';
+
+  var startIndex = (currentPage - 1) * remindersPerPage;
+  var endIndex = startIndex + remindersPerPage;
+
+  userReminders.slice(startIndex, endIndex).forEach(function (reminder, index) {
+    var reminderElement = document.createElement('div');
+    reminderElement.classList.add('reminder');
+    reminderElement.setAttribute('data-tag', reminder.tag);
+    reminderElement.innerHTML = `
+    <h2>${reminder.title}</h2>
+    <p>${reminder.description}</p>
+    <span>${reminder.tag}</span>
+    <br>
+    
+    <button style="background-color: #6d6fff;" onclick="editReminder(${startIndex + index})">Edit</button>
+
+    <button onclick="deleteReminder(${startIndex + index})">Delete</button>
+`;
+    reminderContainer.appendChild(reminderElement);
+
+
+    setTimeout(function () {
+      reminderElement.classList.add('visible');
+    }, 100);
+  });
+
+
+  displayPagination(userReminders.length); // Update this line to use userReminders.length
 }
 
+
+function displayPagination(totalReminders) {
+  var paginationContainer = document.getElementById('pagination');
+  paginationContainer.innerHTML = '';
+
+  var totalPages = Math.ceil(totalReminders / remindersPerPage);
+
+  for (var i = 1; i <= totalPages; i++) {
+    var pageElement = document.createElement('span');
+    pageElement.classList.add('page');
+    if (i === currentPage) {
+      pageElement.classList.add('active');
+    }
+    pageElement.textContent = i;
+    pageElement.addEventListener('click', function () {
+      currentPage = parseInt(this.textContent);
+      displayReminders();
+    });
+    paginationContainer.appendChild(pageElement);
+  }
+}
 
 function deleteReminder(index) {
-    // Get reminders from local storage
-    var reminders = JSON.parse(localStorage.getItem('reminders')) || [];
-
-    // Delete reminder at specified index
-    reminders.splice(index, 1);
-
-    // Save reminders array to local storage
-    localStorage.setItem('reminders', JSON.stringify(reminders));
-
-    // Refresh reminders display
-    displayReminders();
+  var reminders = JSON.parse(localStorage.getItem('reminders'));
+  reminders.splice(index, 1);
+  localStorage.setItem('reminders', JSON.stringify(reminders));
+  displayReminders();
 }
 
-function getRandomLightColor() {
-    var letters = 'BCDEF'.split('');
-    var color = '#';
-    for (var i = 0; i < 6; i++ ) {
-        color += letters[Math.floor(Math.random() * letters.length)];
-    }
-    return color;
+function editReminder(index) {
+  var reminders = JSON.parse(localStorage.getItem('reminders')) || [];
+  var currentUser = localStorage.getItem('currentUser'); // Get the current user
+
+  // Filter the reminders to only include those created by the current user
+  var userReminders = reminders.filter(reminder => reminder.currentUser === currentUser);
+
+  var reminder = userReminders[index];
+
+  document.getElementById('title').value = reminder.title;
+  document.getElementById('description').value = reminder.description;
+  document.getElementById('tag').value = reminder.tag;
+
+  document.getElementById('reminderForm').style.display = 'flex';
+  editingIndex = reminders.indexOf(reminder); // Get the index of the reminder in the original reminders array
 }
 
-function getColorBasedOnTag(tag) {
-  var color;
-  switch(tag) {
-      case 'Urgent':
-          color = '#FF0000'; // Red
-          break;
-      case 'Important':
-          color = '#FFA500'; // Orange
-          break;
-      case 'To remember':
-          color = '#FFFF00'; // Yellow
-          break;
-      case 'If you have time':
-          color = '#008000'; // Green
-          break;
-      case 'Optional':
-          color = '#0000FF'; // Blue
-          break;
-      default:
-          color = '#FFFFFF'; // White
-  }
-  return color;
-}
 
-// Display reminders when page loads
 displayReminders();
+
+

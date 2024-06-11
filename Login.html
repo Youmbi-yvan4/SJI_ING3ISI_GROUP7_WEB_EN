@@ -2,100 +2,7 @@
 <html>
 
 <body>
-    <style>
-        body {
-            display: flex;
-            font-family: Arial, sans-serif;
-        }
-
-        .left {
-            background-color: #000000;
-            color: white;
-            width: 50%;
-            padding: 20px;
-            height: 90vh;
-            border-radius: 2%;
-            margin: 10px;
-        }
-
-        .rightContent {
-            margin: 30% 10% 0% 10%;
-            ;
-        }
-
-        .right {
-            background-color: rgb(255, 255, 255);
-            width: 50%;
-            padding: 20px;
-            border-radius: 2%;
-            border: 1px solid #dfdfdf;
-            margin: 10px;
-
-        }
-
-        .button {
-            background-color: #ffcc00;
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
-            width: 100%;
-            /* border-radius: 10%; */
-        }
-
-        .signin {
-            color: #ffcc00;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-        }
-
-        .form-container {
-            width: 300px;
-            margin: 0 auto;
-        }
-
-        .form-container h2 {
-            text-align: center;
-        }
-
-        .form-container input[type="text"],
-        .form-container input[type="password"] {
-            width: 100%;
-            padding: 12px 20px;
-            margin: 8px 0;
-            display: inline-block;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-        }
-
-        .form-container button {
-            background-color: #ffcc00;
-            color: white;
-            padding: 14px 20px;
-            margin: 8px 0;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        .form-container button:hover {
-            opacity: 0.8;
-        }
-
-        #message {
-    font-size: 20px; /* Increase font size */
-    font-weight: bold; /* Make text bold */
-    color: red; /* Change text color to red */
-    text-align: center;
-  }
-    </style>
+    <link rel="stylesheet" type="text/css" href="Login.css">
 
     <div class="left">
         <h1>Taskify</h1>
@@ -119,42 +26,16 @@
                 <input type="password" placeholder="Enter Password" name="psw" id="password" required><br>
 
                 <button onclick="checkCredentials()" class="button">Login</button>
-                <p style="text-align: center;"><a href="/welcome.html" style="color: #ffcc00;">Back</a></p></div>
-
-               
+                <p style="text-align: center;"><a href="/Index.html" style="color: #ffcc00;">Back</a></p>
             </div>
+
+
         </div>
+    </div>
     </div>
 
 
-    <script>
-   let currentUser = null; // Declare the currentUser variable
-
-function checkCredentials() {
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-
-    // Retrieve the users from local storage
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-
-    // Find the user with the entered credentials
-    const user = users.find(user => user.name === name && user.email === email && user.password === password);
-
-    if (user) {
-        // If the user is found, store the name in currentUser and redirect to the next page
-        currentUser = user.name;
-        localStorage.setItem('currentUser', currentUser); // Store the currentUser in local storage
-        window.location.href = "StickyWall.html";
-    } else {
-        // If the user is not found, display an error message
-        document.getElementById('message').textContent = "User not found";
-    }
-}
-
-    </script>
-    
-
 </body>
+<script src="Login.js"></script>
 
 </html>

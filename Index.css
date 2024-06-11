@@ -1,0 +1,72 @@
+body {
+    display: flex;
+    font-family: Arial, sans-serif;
+  }
+
+  .left {
+    background-color: #000000;
+    color: white;
+    width: 50%;
+    padding: 20px;
+    height: 90vh;
+    border-radius: 2%;
+    margin: 10px;
+  }
+
+  .rightContent {
+    margin: 30% 10% 0% 10%;
+    ;
+  }
+
+  .right {
+    background-color: rgb(255, 255, 255);
+    width: 50%;
+    padding: 20px;
+    border-radius: 2%;
+    border: 1px solid #dfdfdf;
+    margin: 10px;
+
+  }
+
+  .button {
+    background-color: #ffcc00;
+    border: none;
+    color: white;
+    padding: 15px 30%;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 11%;
+    cursor: pointer;
+    width: 80%;
+    /* border-radius: 10%; */
+  }
+
+  .signin {
+    color: #ffcc00;
+  }
+
+  .register {
+    display: flex;
+    align-items: center;
+  }
+
+  .register {
+    opacity: 0;
+    transition: opacity 1s;
+  }
+
+  .register.visible {
+    opacity: 1;
+  }
+
+  .jump {
+    animation: jump 0.5s linear;
+  }
+
+  @keyframes jump {
+    50% {
+      transform: translateY(-20px);
+    }
+  }

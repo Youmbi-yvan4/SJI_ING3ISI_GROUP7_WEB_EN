@@ -1,79 +1,216 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #ffffff;
+    display: flex;
+    justify-content: flex-end;
+    background: #fff9d4;
 }
 
 #reminderContainer {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    border: solid 1px #aaa;
-    margin: 2%;
+    width: 85%;
 }
 
 .reminder {
+    background-color: #f9f9f9;
     border-radius: 5px;
     padding: 20px;
     margin: 10px;
-    width: 200px;
-    height: 200px;
+    width: calc(25% - 20px);
+    box-sizing: border-box;
+}
+
+.reminder[data-tag="Urgent"] {
+    background-color: #ffdddd;
+    /* light red */
+}
+
+.reminder[data-tag="Important"] {
+    background-color: #ffe5b4;
+    /* light orange */
+}
+
+.reminder[data-tag="To remember"] {
+    background-color: #d9ffcc;
+    /* light green */
+}
+
+.reminder[data-tag="If you have time"] {
+    background-color: #d9d9ff;
+    /* light blue */
+}
+
+.reminder[data-tag="Optional"] {
+    background-color: #f2f2f2;
+    /* light gray */
+}
+
+#reminderForm {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    text-align: center;
+}
+
+#reminderForm>div {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    width: 50%;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+#reminderForm input,
+#reminderForm textarea,
+#reminderForm select {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+
+#pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.page {
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+.page.active {
+    font-weight: bold;
 }
 
 #addReminder {
     position: fixed;
     right: 20px;
     bottom: 20px;
-    font-size: 36px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    width: 56px;
-    height: 56px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* The Modal (background) */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-
-/* Modal Content/Box */
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
-}
-
-/* The Close Button */
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 24px;
+    text-align: center;
+    line-height: 60px;
     cursor: pointer;
+}
+
+#saveReminder {
+    background-color: #4CAF50;
+    /* green */
+    color: white;
+    margin: 4.5%;
+    width: 40%;
+}
+
+#cancelReminder {
+    background-color: #f44336;
+    /* red */
+    color: white;
+    margin: 2.5%;
+    width: 40%;
+}
+
+.reminder:hover {
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.reminder p {
+    color: #333;
+    /* dark gray */
+}
+
+.reminder span {
+    display: inline-block;
+    background-color: #0000003d;
+    color: #fff;
+    /* white */
+    border-radius: 3px;
+    padding: 2px 5px;
+    margin-top: 10px;
+    font-size: 0.8em;
+}
+
+.reminder {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.visible {
+    opacity: 1;
+}
+
+.reminder {
+    border-radius: 5px;
+    padding: 20px;
+    margin: 10px;
+    width: calc(25% - 20px);
+    box-sizing: border-box;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.reminder button {
+    display: inline-block;
+    background-color: #f44336;
+    /* red */
+    color: #fff;
+    /* white */
+    border: none;
+    border-radius: 3px;
+    padding: 5px 10px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+
+.reminder button:hover {
+    background-color: #b71c1c;
+    /* dark red */
+}
+
+#clearAll {
+    position: fixed;
+    bottom: 16%;
+    left: 90.5%;
+    background-color: #ff0000;
+    /* red background */
+    color: #ffffff;
+    /* white text */
+    border: none;
+    padding: 10px 10px;
+    /* larger padding */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 12px;
+    /* rounded corners */
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    /* shadow effect */
+    transition-duration: 0.4s;
+    /* adding transition */
+}
+
+#clearAll:hover {
+    background-color: #f44336;
+    /* red background */
+    color: white;
+    /* white text */
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+    /* shadow effect */
 }

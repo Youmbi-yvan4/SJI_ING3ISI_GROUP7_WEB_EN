@@ -30,7 +30,7 @@ function storeCredentials() {
       // Store the updated array in local storage
       localStorage.setItem('users', JSON.stringify(users));
   
-      window.location.href = "Login.html";
+      window.location.href = "../Login/Login.html";
     }
   }
   

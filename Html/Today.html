@@ -1,85 +1,158 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <style>
-body {
-    display: flex;
-    font-family: Arial, sans-serif;
-}
-
-.left-nav {
-    width: 20%;
-    background-color: #f0f0f0;
-    padding: 20px;
-}
-
-.main-content {
-    width: 50%;
-    padding: 20px;
-}
-
-.right-content {
-    width: 30%;
-    background-color: #f0f0f0;
-    padding: 20px;
-}
-
-button {
-    background-color: #6d6fff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-}
-
-h2 {
-    color: #333;
-}
-
-p {
-    color: #666;
-}
-
-    </style>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../Css/Today.css" />
+  <title>Today</title>
 </head>
-<body>
-    <div class="left-nav">
-        <p>Menu</p>
-        <p>Search</p>
-        <p>Today</p>
-        <p>Upcoming</p>
-        <p>Calendar</p>
-        <p>Sticky Wall</p>
-        <p>List 1</p>
-        <p>Personal</p>
-        <p>Work</p>
-        <p>Settings</p>
-        <p>Sign out</p>
+<div class="others">
+
+  <body>
+    <div class="container" style="min-width: 1200px; margin-top: 2%;">
+      <h1 class="heading" id="today-heading">Today</h1>
+      <div class="tasks-wrapper" id="today-tasks-wrapper">
+        <!-- Task 1 -->
+        <div class="task">
+          <div class="task-details">
+            <!-- Task details go here -->
+          </div>
+          <div class="options" style="justify-content: right;">
+            <i class="fa-solid fa-pen-to-square"></i> <!-- Edit icon -->
+            <i class="fa-solid fa-trash-can"></i> <!-- Delete icon -->
+          </div>
+        </div>
+        <!-- More tasks... -->
+      </div>
+      <button class="toggle-button">Add a task</button>
+
+      <div class="add-wrapper" style="display: none;">
+        <form action="" id="today-add-task-form">
+          <div class="details">
+            <input type="text" id="today-title" placeholder="Task name here" />
+            <textarea id="today-description" placeholder="Task description here"></textarea>
+          </div>
+          <div class="footer">
+            <div class="info">
+              <label for="today-date">
+                <ion-icon name="calendar-outline"></ion-icon>
+                <input type="date" name="" id="today-date" />
+                <span>due date</span>
+              </label>
+              <label for="today-time">
+                <ion-icon name="time-outline"></ion-icon>
+                <input type="time" name="" id="today-time" />
+                <span>due time</span>
+              </label>
+            </div>
+            <div class="options">
+              <button type="button" class="btn clear">clear</button>
+              <button class="btn add">add task</button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
-    <div class="main-content">
-        <h2>Today</h2>
-        <p>Research content ideas</p>
-        <p>Create a database of guest authors</p>
-        <p>Renew driver's license</p>
-        <p>Consult accountant</p>
-        <p>Print business cards</p>
+    <div class="other">
+      <div class="container" style="margin-right: 50px;">
+        <h1 class="heading" id="tomorrow-heading">Tomorrow</h1>
+        <div class="tasks-wrapper" id="tomorrow-tasks-wrapper">
+          <!-- Task 1 -->
+          <div class="task">
+            <div class="task-details">
+              <!-- Task details go here -->
+            </div>
+            <div class="options">
+              <i class="fa-solid fa-pen-to-square"></i> <!-- Edit icon -->
+              <i class="fa-solid fa-trash-can"></i><!-- Delete icon -->
+            </div>
+          </div>
+          <!-- More tasks... -->
+        </div>
+        <button class="toggle-button">Add a task</button>
+
+        <div class="add-wrapper" style="display: none;">
+          <form action="" id="tomorrow-add-task-form">
+            <div class="details">
+              <input type="text" id="tomorrow-title" placeholder="Task name here" />
+              <textarea id="tomorrow-description" placeholder="Task description here"></textarea>
+            </div>
+            <div class="footer">
+              <div class="info">
+                <label for="tomorrow-date">
+                  <ion-icon name="calendar-outline"></ion-icon>
+                  <input type="date" name="" id="tomorrow-date" />
+                  <span>due date</span>
+                </label>
+                <label for="tomorrow-time">
+                  <ion-icon name="time-outline"></ion-icon>
+                  <input type="time" name="" id="tomorrow-time" />
+                  <span>due time</span>
+                </label>
+              </div>
+              <div class="options">
+                <button type="button" class="btn clear">clear</button>
+                <button class="btn add">add task</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="container">
+        <h1 class="heading" id="week-heading">This week</h1>
+        <div class="tasks-wrapper" id="week-tasks-wrapper">
+          <!-- Task 1 -->
+          <div class="task">
+            <div class="task-details">
+              <!-- Task details go here -->
+            </div>
+            <div class="options">
+              <i class="fa-solid fa-pen-to-square"></i> <!-- Edit icon -->
+              <i class="fa-solid fa-trash-can"></i> <!-- Delete icon -->
+            </div>
+          </div>
+          <!-- More tasks... -->
+        </div>
+       
+        <button class="toggle-button">Add a task</button>
+
+        <div class="add-wrapper" style="display: none;">
+          <form action="" id="week-add-task-form">
+            <div class="details">
+              <input type="text" id="week-title" placeholder="Task name here" />
+              <textarea id="week-description" placeholder="Task description here"></textarea>
+            </div>
+            <div class="footer">
+              <div class="info">
+                <label for="week-date">
+                  <ion-icon name="calendar-outline"></ion-icon>
+                  <input type="date" name="" id="week-date" />
+                  <span>due date</span>
+                </label>
+                <label for="week-time">
+                  <ion-icon name="time-outline"></ion-icon>
+                  <input type="time" name="" id="week-time" />
+                  <span>due time</span>
+                </label>
+              </div>
+              <div class="options">
+                <button type="button" class="btn clear">clear</button>
+                <button class="btn add">add task</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
-    <div class="right-content">
-        <h2>Task: Renew driver's license</h2>
-        <p>Description </p>
-        <p>List: Personal</p>
-        <p>Due date: 11-03-22</p>
-        <p>Tag 1</p>
-        <p>+ Add Tag</p>
-        <p>Subtasks:</p>
-        <p>+ Add New Subtask</p>
-        <button>Delete Task</button>
-        <button>Save changes</button>
-    </div>
+
+</div>
+
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+<script src="../Js/Today.js"></script>
 </body>
+
 </html>

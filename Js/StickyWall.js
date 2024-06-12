@@ -8,10 +8,21 @@ document.getElementById('addReminder').addEventListener('click', function () {
 });
 
 document.getElementById('greeting').textContent = localStorage.getItem('currentUser') + "'s Sticky Wall ";
+
 document.getElementById('clearAll').addEventListener('click', function () {
-  localStorage.removeItem('reminders');
+  // Get the reminders from local storage
+  var reminders = JSON.parse(localStorage.getItem('reminders')) || [];
+
+  // Filter out the reminders for the current user
+  reminders = reminders.filter(function(reminder) {
+    return reminder.currentUser !== localStorage.getItem('currentUser');
+  });
+
+  // Save the updated reminders back to local storage
+  localStorage.setItem('reminders', JSON.stringify(reminders));
   displayReminders();
 });
+
 
 // document.getElementById('logout').addEventListener('click', function () {
 //     // Clear the currentUser from local storage
@@ -112,11 +123,29 @@ function displayPagination(totalReminders) {
 }
 
 function deleteReminder(index) {
-  var reminders = JSON.parse(localStorage.getItem('reminders'));
-  reminders.splice(index, 1);
+  // Get the reminders from local storage
+  var reminders = JSON.parse(localStorage.getItem('reminders')) || [];
+
+  // Filter out the reminders for the current user
+  var currentUserReminders = reminders.filter(function(reminder) {
+    return reminder.currentUser === localStorage.getItem('currentUser');
+  });
+
+  // Remove the reminder at the specified index
+  currentUserReminders.splice(index, 1);
+
+  // Replace the current user's reminders in the main reminders array
+  reminders = reminders.filter(function(reminder) {
+    return reminder.currentUser !== localStorage.getItem('currentUser');
+  });
+  reminders = reminders.concat(currentUserReminders);
+
+  // Save the updated reminders back to local storage
   localStorage.setItem('reminders', JSON.stringify(reminders));
+
   displayReminders();
 }
+
 
 function editReminder(index) {
   var reminders = JSON.parse(localStorage.getItem('reminders')) || [];

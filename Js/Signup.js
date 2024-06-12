@@ -32,7 +32,7 @@ function storeCredentials() {
 
     currentUser = name;
     localStorage.setItem('currentUser', currentUser);
-    window.location.href = "StickyWall.html";
+    window.location.href = "../Html/upcoming.html";
   }
 }
 

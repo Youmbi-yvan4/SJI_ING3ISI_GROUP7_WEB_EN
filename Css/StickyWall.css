@@ -1,5 +1,40 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
+:root{
+        /* ===== Colors ===== */
+        --body-color: #E4E9F7;
+        --primary-color:#bbff00;
+        --secondary-color:#ffcc00;
+        --thertiary-color: black;
+        --primary-text:white;
+        --containerbox: #5fcdfd;
+        --innercalendar: #2c38d8;
+        --calendarinner: #d3d4d6d7;
+        --just: #ffcc00;
+      
+      /* ===== Transition ===== */
+        --tran-02: all 0.2s ease;
+        --tran-03: all 0.3s ease;
+        --tran-04: all 0.4s ease;
+        --tran-05: all 0.5s ease;
+      }
+
+/* body.dark{
+    --body-color: #18191A;
+    --sidebar-color:#242526;
+    --primary-color:#3A3B3C;
+    --primary-color-light:#3A3B3C;
+    --toggle-color:#FFF;
+    --text-color:#fff;
+    --text1-color:#0b82f1;
+    --text-button:#0b82f1;
+    --text-m-color:#fff;
+    --primary-color:#0b82f1;
+    --secondary-color:#ff0000;
+    --thertiary-color: black;
+} */
+
+
 *{
     font-family: 'Poppins', sans-serif;
     margin: 0;
@@ -7,32 +42,10 @@
     box-sizing: border-box;
 }
 
-:root{
-    /* ===== Colors ===== */
-    --body-color: #E4E9F7;
-    --sidebar-color:#FFF;
-    --primary-color:#00ffbf;
-    --primary-color-light:#F6F5FF;
-    --toggle-color:#DDD;
-    --text-color:#707070;
-    --text1-color:#000000;
-    --text2-color:#000000;
-    --text-button:#00ffbf;
-    --text-m-color:#000;
-
-/* ===== Transition ===== */
-    --tran-02: all 0.2s ease;
-    --tran-03: all 0.3s ease;
-    --tran-04: all 0.4s ease;
-    --tran-05: all 0.5s ease;
-}
-
 body {
-
-    font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
-    background: #fff9d4;
+    background: var(--body-color);
     height: 100vh;
     transition: var(--tran-04);
 }
@@ -41,9 +54,9 @@ body {
     left: 170px;
     width: calc(95% - 120px);
     justify-content: space-between;
-    background: var(--body-color);
+    background: white;
     transition: var(--tran-05);
-    color: var(--text-m-color);
+   background-color: var(--body-color);
 }
 
 .sidebar.close ~ .home{
@@ -57,6 +70,7 @@ body {
     justify-content: space-around;
     width: 90%;
     border-radius: 50px;
+    background-color: var(--containerbox);
 }
 
 .reminder {
@@ -69,27 +83,27 @@ body {
 }
 
 .reminder[data-tag="Urgent"] {
-    background-color: #ffdddd;
+    background-color: var(--secondary-color);
     /* light red */
 }
 
 .reminder[data-tag="Important"] {
-    background-color: #ffe5b4;
+    background-color: var(--containerbox);
     /* light orange */
 }
 
 .reminder[data-tag="To remember"] {
-    background-color: #d9ffcc;
+    background-color: var(--primary-color);
     /* light green */
 }
 
 .reminder[data-tag="If you have time"] {
-    background-color: #d9d9ff;
+    background-color: var(--innercalendar);
     /* light blue */
 }
 
 .reminder[data-tag="Optional"] {
-    background-color: #f2f2f2;
+    background-color: var(--calendarinner);
     /* light gray */
 }
 
@@ -99,7 +113,7 @@ body {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0);
     display: flex;
     justify-content: center;
     align-items: center;

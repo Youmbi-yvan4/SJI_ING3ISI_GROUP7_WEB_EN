@@ -261,7 +261,7 @@ function updateEvents(date) {
   });
   if (events === "") {
     events = `<div class="no-event">
-            <h3>No Events</h3>
+            <h3>No Activity</h3>
         </div>`;
   }
   eventsContainer.innerHTML = events;
@@ -290,8 +290,6 @@ addEventTitle.addEventListener("input", (e) => {
 
 function defineProperty() {
   var osccred = document.createElement("div");
-  osccred.innerHTML =
-    "A Project By <a href='https://www.youtube.com/channel/UCiUtBDVaSmMGKxg1HYeK-BQ' target=_blank>Open Source Coding</a>";
   osccred.style.position = "absolute";
   osccred.style.bottom = "0";
   osccred.style.right = "0";

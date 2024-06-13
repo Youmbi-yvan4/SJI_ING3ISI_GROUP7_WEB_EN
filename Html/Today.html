@@ -2,157 +2,169 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="../Css/Today.css" />
-  <title>Today</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../Css/upcoming.css">
+    <link rel="stylesheet" type="text/css" href="../Css/Today.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+   
+    <title>Reminder App</title>
 </head>
-<div class="others">
 
-  <body>
-    <div class="container" style="min-width: 1200px; margin-top: 2%;">
-      <h1 class="heading" id="today-heading">Today</h1>
-      <div class="tasks-wrapper" id="today-tasks-wrapper">
-        <!-- Task 1 -->
-        <div class="task">
-          <div class="task-details">
-            <!-- Task details go here -->
-          </div>
-          <div class="options" style="justify-content: right;">
-            <i class="fa-solid fa-pen-to-square"></i> <!-- Edit icon -->
-            <i class="fa-solid fa-trash-can"></i> <!-- Delete icon -->
-          </div>
+<body  style="background-color:var(--body-color);">
+
+    <nav class="sidebar close" >
+        <header>
+            <div class="image-text">
+                <span class="image">
+                    <img src="../Images/download (3).png" alt="Logo">
+                </span>
+                <div class="text1 header-text">
+                    <span class="name">To-Do_List</span>
+                    <span class="profession"><h2>Menu</h2></span>
+                </div>
+            </div>
+            <i class='bx bx-chevron-right toggle'></i>
+        </header>
+    
+        <div class="menu-bar">
+            <div class="menu">
+                <li class="search-box">
+                        <i class='bx bx-search icon' ></i>
+                        <input type="text1" placeholder="Search...">
+                </li>
+                <ul class="menu-links">
+                    <h6><div class="text2">TASKS</div></h6>
+    
+                    <li class="nav-link">
+                        <a href="../Html/upcoming.html">
+                            <i class='bx bx-home-alt icon' ></i>
+                            <span class="text1 nav-text">Upcoming <span class="notification">8</span> </span> 
+                        </a>
+                    </li>
+    
+                    <li class="nav-link">
+                        <a href="../Html/Today.html">
+                            <i class='bx bx-bar-chart-alt-2 icon'></i>
+                            <span class="text1 nav-text">Today <span class="notification">8</span></span>
+                            
+                        </a>
+                    </li>
+                  
+                    <li class="nav-link">
+                        <a href="../Html/calendar.html">
+                            <i class='bx bx-bell icon' ></i>
+                            <span class="text1 nav-text">Calendar</span>
+                            
+                        </a>
+                    </li>
+    
+                    <li class="nav-link">
+                        <a href="../Html/StickyWall.html">
+                            <i class='bx bx-bar-chart-alt icon' ></i>
+                            <span class="text1 nav-text">Sticky Wall</span>
+                        </a>
+                    </li>
+                    <hr></hr>
+                    <h6><div class="text2">LISTS</div></h6>
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class='bx bx-heart icon' ></i>
+                            <span class="text1 nav-text">Personal</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class='bx bx-heart icon' ></i>
+                            <span class="text1 nav-text">Work</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class='bx bx-heart icon' ></i>
+                            <span class="text1 nav-text">List 1</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class='bx bx-heart icon' ></i>
+                            <span class="text1 nav-text">Add New List</span>
+                        </a>
+                    </li>
+                <hr>
+                <h6><div class="text2">TAGS</div></h6>
+                    <div class="container">
+                        <button class="icon"><i class='bx bxs-cog icon'></i>AddTags</button>
+                            <div class="content text1">Tag1</div>
+                            <div class="content text1">Tag2</div>
+                            <div class="content text1">Tag3</div>
+                    </div>
+                </ul>
+            </div>
+           <div class="bottom-content">
+            <li class="">
+                <a href="#">
+                    <i class='bx bxs-cog icon'></i>
+                    <span class="text1 nav-text">Setting</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="../Login/Login.html">
+                    <i class='bx bx-log-out icon' ></i>
+                    <span class="text1 nav-text">Logout</span>
+                </a>
+            </li>
+    
+            <li class="mode">
+                <div class="moon-sun">
+                    <i class='bx bx-moon icon moon' ></i>
+                    <i class='bx bx-sun icon sun' ></i>
+                </div>
+                <span class="mode-text text1">Dark Mode</span>
+                
+                <div class="toggle-switch">
+                    <span class="switch"></span>
+                </div>
+            </li>
+           </div>
         </div>
-        <!-- More tasks... -->
-      </div>
-      <button class="toggle-button">Add a task</button>
+    </nav>
 
-      <div class="add-wrapper" style="display: none;">
-        <form action="" id="today-add-task-form">
-          <div class="details">
-            <input type="text" id="today-title" placeholder="Task name here" />
-            <textarea id="today-description" placeholder="Task description here"></textarea>
-          </div>
-          <div class="footer">
-            <div class="info">
-              <label for="today-date">
-                <ion-icon name="calendar-outline"></ion-icon>
-                <input type="date" name="" id="today-date" />
-                <span>due date</span>
-              </label>
-              <label for="today-time">
-                <ion-icon name="time-outline"></ion-icon>
-                <input type="time" name="" id="today-time" />
-                <span>due time</span>
-              </label>
-            </div>
-            <div class="options">
-              <button type="button" class="btn clear">clear</button>
-              <button class="btn add">add task</button>
-            </div>
-          </div>
-        </form>
+
+<!-- MAIN BODY -->
+<div class="home">
+  <h1>Today</h1>
+  <div class="row limiter">
+    <div class="row insert">
+      <input type="checkbox" id="js-toggle-all" class="toggle">
+      <input type="text" id="js-insert" placeholder="What needs to be done ?">
+    </div>
+    <div class="row bar" id="js-bar">
+      <div class="col-1-4">
+        <span class="total" id="js-total">0 items left</span>
+      </div>
+      <div class="col-1-2">
+        <ul class="filter" id="js-filters">
+          <li><a href="#/all" class="button selected">All</a></li>
+          <li><a href="#/active" class="button">Active</a></li>
+          <li><a href="#/completed" class="button">Completed</a></li>
+        </ul>
+      </div>
+      <div class="col-1-4">
+        <button class="button button--clear" id="js-clear-completed">Clear Completed</button>
       </div>
     </div>
-    <div class="other">
-      <div class="container" style="margin-right: 50px;">
-        <h1 class="heading" id="tomorrow-heading">Tomorrow</h1>
-        <div class="tasks-wrapper" id="tomorrow-tasks-wrapper">
-          <!-- Task 1 -->
-          <div class="task">
-            <div class="task-details">
-              <!-- Task details go here -->
-            </div>
-            <div class="options">
-              <i class="fa-solid fa-pen-to-square"></i> <!-- Edit icon -->
-              <i class="fa-solid fa-trash-can"></i><!-- Delete icon -->
-            </div>
-          </div>
-          <!-- More tasks... -->
-        </div>
-        <button class="toggle-button">Add a task</button>
-
-        <div class="add-wrapper" style="display: none;">
-          <form action="" id="tomorrow-add-task-form">
-            <div class="details">
-              <input type="text" id="tomorrow-title" placeholder="Task name here" />
-              <textarea id="tomorrow-description" placeholder="Task description here"></textarea>
-            </div>
-            <div class="footer">
-              <div class="info">
-                <label for="tomorrow-date">
-                  <ion-icon name="calendar-outline"></ion-icon>
-                  <input type="date" name="" id="tomorrow-date" />
-                  <span>due date</span>
-                </label>
-                <label for="tomorrow-time">
-                  <ion-icon name="time-outline"></ion-icon>
-                  <input type="time" name="" id="tomorrow-time" />
-                  <span>due time</span>
-                </label>
-              </div>
-              <div class="options">
-                <button type="button" class="btn clear">clear</button>
-                <button class="btn add">add task</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-      <div class="container">
-        <h1 class="heading" id="week-heading">This week</h1>
-        <div class="tasks-wrapper" id="week-tasks-wrapper">
-          <!-- Task 1 -->
-          <div class="task">
-            <div class="task-details">
-              <!-- Task details go here -->
-            </div>
-            <div class="options">
-              <i class="fa-solid fa-pen-to-square"></i> <!-- Edit icon -->
-              <i class="fa-solid fa-trash-can"></i> <!-- Delete icon -->
-            </div>
-          </div>
-          <!-- More tasks... -->
-        </div>
-       
-        <button class="toggle-button">Add a task</button>
-
-        <div class="add-wrapper" style="display: none;">
-          <form action="" id="week-add-task-form">
-            <div class="details">
-              <input type="text" id="week-title" placeholder="Task name here" />
-              <textarea id="week-description" placeholder="Task description here"></textarea>
-            </div>
-            <div class="footer">
-              <div class="info">
-                <label for="week-date">
-                  <ion-icon name="calendar-outline"></ion-icon>
-                  <input type="date" name="" id="week-date" />
-                  <span>due date</span>
-                </label>
-                <label for="week-time">
-                  <ion-icon name="time-outline"></ion-icon>
-                  <input type="time" name="" id="week-time" />
-                  <span>due time</span>
-                </label>
-              </div>
-              <div class="options">
-                <button type="button" class="btn clear">clear</button>
-                <button class="btn add">add task</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
+    <div class="row">
+      <ul class="list" id="js-list"></ul>
     </div>
-
+  </div>
 </div>
 
-<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-
-<script src="../Js/Today.js"></script>
+    <script src="../Js/Today.js"></script>
+    <script src="../Js/sidebar.js"></script>
 </body>
 
 </html>

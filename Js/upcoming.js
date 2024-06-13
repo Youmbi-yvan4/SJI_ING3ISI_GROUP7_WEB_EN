@@ -1,3 +1,7 @@
+document.getElementById('greeting').textContent ="Welcome " + localStorage.getItem('currentUser');
+
+
+
 const body = document.querySelector("body"),
         sidebar = body.querySelector(".sidebar"),
         toggle = body.querySelector(".toggle"),

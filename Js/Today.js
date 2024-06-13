@@ -1,213 +1,484 @@
-// Define the task classes
-class Task {
-  constructor(title, description, dueDate, dueTime) {
-    this.title = title;
-    this.description = description;
-    this.dueDate = dueDate;
-    this.dueTime = dueTime;
-    this.completed = false;
-  }
-}
+;(function(context) {
 
-class TaskList {
-  constructor(id) {
-    this.id = id;
-    this.tasks = [];
+  'use strict';
+
+  function $( selector, scope ) {
+    return $.qsa( selector, scope, true );
   }
 
-  addTask(task) {
-    this.tasks.push(task);
-    this.saveTasks();
-    this.displayTasks();
-  }
+  $['qsa'] = function( selector, scope, first ) {
+    var e = ( scope || document).querySelectorAll( selector );
+    return first ? e[0] : e;
+  };
 
-  editTask(index, newTask) {
-    this.tasks[index] = newTask;
-    this.saveTasks();
-    this.displayTasks();
-  }
+  $['noop'] = function() {};
 
-  deleteTask(index) {
-    this.tasks.splice(index, 1);
-    this.saveTasks();
-    this.displayTasks();
-  }
 
-  saveTasks() {
-    localStorage.setItem(this.id, JSON.stringify(this.tasks));
-  }
+  $['each'] = function( array, cb ) {
+    var len = array.length;
+    var idx = -1;
+    while( ++idx < len ) {
+      cb.call(array, array[idx], idx, array);
+    }
+  };
 
-  loadTasks() {
-    this.tasks = JSON.parse(localStorage.getItem(this.id)) || [];
-    this.displayTasks();
-  }
+  $['pluralization'] = function( value ) {
+    return +value === 1 ? "" : "s";
+  };
 
-  displayTasks() {
-    const tasksWrapper = document.querySelector(`#${this.id}-tasks-wrapper`);
-    tasksWrapper.innerHTML = '';
-    this.tasks.forEach((task, index) => {
-      const taskElement = document.createElement('div');
-      taskElement.innerHTML = `
-        <div class="task">
-          <input type="checkbox" id="task-${index}">
-          <label for="task-${index}">${task.title}</label>
-          <aside>
-            <p>${task.description}</p>
-            <p>Due on ${task.dueDate} at ${task.dueTime}</p>
-          </aside>
-          <button onclick="editTask('${this.id}', ${index})">Edit</button>
-          <button onclick="deleteTask('${this.id}', ${index})">Delete</button>
-        </div>
-      `;
-      tasksWrapper.appendChild(taskElement);
-    });
-  }}
-  
-// Initialize the task lists
-const todayTasks = new TaskList('today');
-const tomorrowTasks = new TaskList('tomorrow');
-const weekTasks = new TaskList('week');
+  $['on'] = function (target, type, callback, useCapture) {
+    target.addEventListener(type, callback, !!useCapture);
+  };
 
-// Load tasks from local storage
-todayTasks.loadTasks();
-tomorrowTasks.loadTasks();
-weekTasks.loadTasks();
+  $['delegate'] = function (target, selector, type, handler) {
+    function dispatchEvent(event) {
+      var targetElement = event.target;
+      var potentialElements = $.qsa(selector, target);
+      var hasMatch = Array.prototype.indexOf.call(potentialElements, targetElement) >= 0;
+      if (hasMatch) {
+        handler.call(targetElement, event);
+      }
+    }
 
-// Add event listeners to the add task buttons
-['today', 'tomorrow', 'week'].forEach(id => {
-  document.querySelector(`#${id}-add-task-form .btn.add`).addEventListener('click', function() {
-    const title = document.querySelector(`#${id}-title`).value;
-    const description = document.querySelector(`#${id}-description`).value;
-    let dueDate = document.querySelector(`#${id}-date`).value;
-    const dueTime = document.querySelector(`#${id}-time`).value;
+    // https://developer.mozilla.org/en-US/docs/Web/Events/blur
+    var useCapture = type === 'blur' || type === 'focus';
 
-    // Validate the inputs
-    if (!title || !description || !dueTime) {
-      alert('Please fill in all fields.');
+    $.on(target, type, dispatchEvent, useCapture);
+  };
+
+  $['parent'] = function (element, tagName) {
+    if (!element.parentNode) {
       return;
     }
-
-    // Set the due date to today or tomorrow if necessary
-    const currentDate = new Date();
-    if (id === 'today') {
-      dueDate = currentDate.toISOString().split('T')[0];
-    } else if (id === 'tomorrow') {
-      currentDate.setDate(currentDate.getDate() + 1);
-      dueDate = currentDate.toISOString().split('T')[0];
+    if (element.parentNode.tagName.toLowerCase() === tagName.toLowerCase()) {
+      return element.parentNode;
     }
+    return $.parent(element.parentNode, tagName);
+  };
 
-    const task = new Task(title, description, dueDate, dueTime);
+  context.$ = $;
 
-    // Add the task to the appropriate list
-    if (id === 'today') {
-      todayTasks.addTask(task);
-    } else if (id === 'tomorrow') {
-      tomorrowTasks.addTask(task);
+})(this);
+
+// Prototype
+NodeList.prototype.each = function( fn ) {
+  var len = this.length;
+  var idx = -1;
+  while( ++idx < len ) {
+    fn.call(this, this[idx], idx, this);
+  }
+}
+
+Array.prototype.some = function( fn ) {
+
+  var len = this.length;
+  var idx = -1;
+  while( ++idx < len ) {
+    if( fn( this[idx], idx, this ) ) {
+      return true;
+    }
+  }
+  return false;
+
+};
+
+;(function(context) {
+
+  'use strict';
+
+  var store = localStorage;
+
+  function Stores( key ) {
+    this.key = key;
+    if( !store[key] ) {
+      store[key] = JSON.stringify([]);
+    }
+  }
+
+  Stores.fn = Stores.prototype;
+
+  Stores.fn.find = function( id, cb ) {
+
+    var items = JSON.parse(store[this.key]);
+    var item = items
+      .filter(function(item) {
+        return id === item.id;
+      });
+    cb.call(this, item[0] || {} );
+  };
+
+  Stores.fn.findAll = function( cb ) {
+    cb.call(this, JSON.parse( store[this.key] ));
+  };
+
+  Stores.fn.save = function( item, cb, options ) {
+
+    var items = JSON.parse(store[this.key]);
+
+    // Implementar Update Multiple
+    // if ( options && options.multi ) {
+    // }
+
+    // Update
+    if (item.id) {
+      items = items
+        .map(function( x ) {
+          if( x.id === item.id ) {
+            for (var prop in item ) {
+              x[prop] = item[prop];
+            }
+          }
+          return x;
+        });
+    // Insert
     } else {
-      weekTasks.addTask(task);
+      item.id = new Date().getTime();
+      items.push(item);
     }
 
-    // Clear the form
-    document.querySelector(`#${id}-title`).value = '';
-    document.querySelector(`#${id}-description`).value = '';
-    document.querySelector(`#${id}-date`).value = '';
-    document.querySelector(`#${id}-time`).value = '';
-  });
-});
+    store[this.key] = JSON.stringify(items);
 
-function deleteTask(id, index) {
-  if (id === 'today') {
-    todayTasks.deleteTask(index);
-  } else if (id === 'tomorrow') {
-    tomorrowTasks.deleteTask(index);
-  } else {
-    weekTasks.deleteTask(index);
+    cb.call(this, item);
+    // this.findAll(cb);
+
+  };
+
+  Stores.fn.destroy = function( id, cb ) {
+
+    var items = JSON.parse(store[this.key]);
+    items = items
+        .filter(function( x ) {
+          return x.id !== id;
+        });
+
+    store[this.key] = JSON.stringify(items);
+
+    cb.call(this, true);
+
+  };
+
+
+  Stores.fn.drop = function( cb ) {
+    store[this.key] = JSON.stringify([]);
+    this.findAll(cb);
+  };
+
+  context.Stores = Stores;
+
+})( this );
+;(function(context) {
+
+  'use strict';
+
+  var ENTER_KEY = 13;
+  var ESC_KEY = 27;
+
+  function App( localStorageKey ) {
+
+    this.stores = new Stores(localStorageKey);
+    this.currentId = 0;
+    this.$insert = $('#js-insert');
+    this.$toggleAll = $('#js-toggle-all');
+    this.$bar = $('#js-bar');
+    this.$list = $('#js-list');
+    this.$clearCompleted = $('#js-clear-completed');
+    this.$total = $('#js-total');
+    this.$filters = $('#js-filters');
+    this.addEventListeners();
+    this.render();
+
   }
-}
 
-function editTask(id, index) {
-  const task = id === 'today' ? todayTasks.tasks[index] :
-               id === 'tomorrow' ? tomorrowTasks.tasks[index] :
-               weekTasks.tasks[index];
+  App.fn = App.prototype;
 
-  document.querySelector(`#${id}-title`).value = task.title;
-  document.querySelector(`#${id}-description`).value = task.description;
-  document.querySelector(`#${id}-date`).value = task.dueDate;
-  document.querySelector(`#${id}-time`).value = task.dueTime;
+  App.fn.addEventListeners = function() {
 
-  // Remove the old task
-  deleteTask(id, index);
-}
-// document.getElementById('toggle-button').addEventListener('click', function() {
-//   var wrapper = document.querySelector('.add-wrapper');
-//   if (wrapper.style.display === "none") {
-//     wrapper.style.display = "block";
-//   } else {
-//     wrapper.style.display = "none";
-//   }
-// });
+    $.on(this.$insert, 'keypress', this.onInsert.bind(this));
 
-var buttons = document.querySelectorAll('.toggle-button');
-buttons.forEach(function(button) {
-  button.addEventListener('click', function() {
-    var wrapper = this.nextElementSibling;
-    if (wrapper.style.display === "none") {
-      wrapper.style.display = "block";
+    $.on(this.$toggleAll, 'click', this.onToggleAll.bind(this));
+    $.delegate(this.$list, '.toggle', 'click', this.onToggle.bind(this));
+
+    $.delegate(this.$list, '.destroy', 'click', this.onDestroy.bind(this) );
+
+    $.on(this.$clearCompleted, 'click', this.onClearCompleted.bind(this));
+
+
+    $.delegate(this.$filters, '.button', 'click', this.onFilter.bind(this));
+
+    $.delegate(this.$list, 'span', 'dblclick', this.onStartEditing.bind(this));
+    $.delegate(this.$list, '.edit', 'keyup', this.onEditingCancel.bind(this));
+    $.delegate(this.$list, '.edit', 'keypress', this.onEditingDone.bind(this));
+    $.delegate(this.$list, '.edit', 'blur', this.onEditingLeave.bind(this) );
+  };
+
+  App.fn.onStartEditing = function(event) {
+    var li = $.parent(event.target, 'li');
+    var element = $('.edit', li);
+    this.currentId = parseInt(li.dataset.id, 10);
+    li.className += ' editing';
+    element.value = event.target.innerHTML;
+    element.focus();
+  };
+
+  App.fn.onEditingCancel = function(event) {
+    if( event.keyCode === ESC_KEY ) {
+      console.log('onEditingCancel', event.target);
+      event.target.dataset.isCanceled = true;
+      event.target.blur();
+    }
+  };
+
+  App.fn.onEditingDone = function(event) {
+    if( event.keyCode === ENTER_KEY ) {
+      event.target.blur();
+    }
+  };
+
+  App.fn.onEditingLeave = function(event) {
+    console.log('onEditingLeave');
+    var input = event.target;
+    var id = this.getItemId( input );
+    var text = input.value.trim();
+    var li = this.getElementByDataId( id );
+    if( input.value.trim() ) {
+      var item = {
+        id: id,
+        text: text
+      };
+      this.stores.save(item,this.endEditing.bind(this, li, text));
     } else {
-      wrapper.style.display = "none";
+      if( input.dataset.isCanceled ) {
+        this.endEditing( li );
+      } else {
+        this.destroy( id );
+      }
     }
-  });
-});
+  };
 
-// // Function to update the heading for an interface
-// function updateHeading(tasks, headingId) {
-//   let uncompleted = tasks.filter(task => !task.completed).length;
-//   let total = tasks.length;
-//   document.getElementById(headingId).textContent = `Today (${uncompleted}/${total})`;
-// }
+  App.fn.endEditing = function( li, text ) {
+    li.className = li.className.replace('editing', '');
+    $('.edit', li).removeAttribute('data-is-canceled');
+    if( text ) {
+      $('span', li).innerHTML = text;
+    }
+  };
 
-// // Call this function whenever a task is added or its status is changed
-// updateHeading(todayTasks, 'today-heading');
-// updateHeading(tomorrowTasks, 'tomorrow-heading');
-// updateHeading(weekTasks, 'week-heading');
+  App.fn.getItemId = function( element ) {
+    var li = $.parent(element, 'li');
+    return parseInt(li.dataset.id, 10);
+  };
+
+  App.fn.getElementByDataId = function( id ) {
+    return $('[data-id="' + id + '"]');
+  };
+
+  App.fn.onInsert = function( event ) {
+    var element = event.target;
+    var text = element.value.trim();
+    if( text && event.keyCode === ENTER_KEY ) {
+      this.insert(text);
+      element.value = '';
+    }
+  };
+
+  App.fn.onToggleAll = function(event) {
+    var checked = event.target.checked;
+    var self = this;
+
+    this.stores.findAll(function( items ) {
+      $.each( items, function( item ) {
+        item.completed = checked;
+        self.stores.save( item, $.noop);
+      });
+      self.render();
+    });
+  };
+
+  App.fn.onToggle = function(event) {
+    var element = event.target;
+    var id = this.getItemId( element );
+    var item = {
+      id: id,
+      completed: element.checked
+    };
+    this.stores.save( item, function(item) {
+      var li = this.getElementByDataId( item.id );
+      li.className = item.completed ? 'completed' : '';
+      $('.toggle', li).checked = item.completed;
+      this.showControls();
+    }.bind(this));
+  };
+
+  App.fn.onDestroy = function(event) {
+    var id = this.getItemId( event.target );
+    this.destroy( id );
+  };
+
+  App.fn.onClearCompleted = function(event) {
+    var self = this;
+    this.stores.findAll(function( items ) {
+      items = items
+        .filter(function( item ) {
+          return item.completed;
+        })
+        .forEach(function( item ) {
+          self.destroy( item.id );
+        });
+    });
+  };
+
+  App.fn.onFilter = function(event) {
+    document.location.hash = event.target.getAttribute('href');
+    this.render();
+  };
+
+  // Insert
+  App.fn.insert = function( text ) {
+    var item = {
+      text: text,
+      completed: false
+    };
+    this.stores.save(item, function( item ) {
+      var element = this.nodeItem( item );
+      this.$list.appendChild( element );
+      this.showControls();
+    }.bind(this));
+  };
+
+  // Destroy
+  App.fn.destroy = function( id ) {
+    this.stores.destroy( id, function() {
+      var li = this.getElementByDataId( id );
+      this.$list.removeChild(li);
+      this.showControls();
+    }.bind(this));
+  };
+
+  App.fn.filter = function() {
+    var hash = document.location.hash;
+    if( !hash ) return false;
+    $.qsa( '.button', this.$filters )
+      .each(function( button ) {
+        if ( button.getAttribute('href') === hash ) {
+          button.className = 'button selected';
+        } else {
+          button.className = button.className.replace('selected', '');
+        }
+      });
+    hash = hash.split('#/')[1]
+    return hash !== 'all' ? hash : false;
+  };
+
+  // Render
+  App.fn.render = function() {
+
+    var filter = this.filter();
+
+    this.stores.findAll(function(items){
+      if( filter ) {
+        items = items
+          .filter(function(item) {
+            return item.completed === ( filter === 'completed' );
+          });
+      }
+      var nodes = this.nodeItemMulti( items );
+      this.$list.innerHTML = "";
+      this.$list.appendChild(nodes);
+      this.showControls();
+
+    }.bind(this));
+
+  };
 
 
-function countIncompleteTasks(taskList) {
-  // Check if taskList is defined and has a tasks property
-  if (!taskList || !Array.isArray(taskList.tasks)) {
-    console.error('Invalid argument: taskList must be an object with a tasks array');
-    return;
+  App.fn.showControls = function () {
+    this.stores.findAll(function(items){
+      this.showBarAndToggleAll( items );
+      this.showTotalTasksLeft( items );
+      this.showClearCompleted( items );
+    }.bind(this));
+  };
+
+  App.fn.showBarAndToggleAll = function( items ) {
+    var total = items.length;
+    var completed = items.filter(function(item){
+      return item.completed;
+    });
+    var value = total ? 'block' : 'none';
+    this.$toggleAll.style.display = value;
+    this.$toggleAll.checked = total === completed.length;
+    this.$bar.style.display = value;
+  };
+
+  App.fn.showTotalTasksLeft = function(items) {
+    items = items
+      .filter(function( item ) {
+        return !item.completed;
+      });
+    var len = items.length;
+    var text = [len,' item',$.pluralization( len ),' left'].join('');
+    this.$total.innerHTML = text;
+  };
+
+  App.fn.showClearCompleted = function(items) {
+    var some = items
+      .some(function( item ) {
+        return item.completed;
+      });
+    this.$clearCompleted.style.display = some ? 'inline-block' : 'none';
+  };
+
+  App.fn.nodeItemMulti = function ( items ) {
+    var fragment = document.createDocumentFragment();
+    $.each( items, function( item ) {
+      fragment.appendChild( this.nodeItem(item) );
+    }.bind(this));
+    return fragment;
+  };
+
+  App.fn.nodeItem = function( item ) {
+    var li = document.createElement('li');
+    var div = document.createElement('div');
+    var toggle = document.createElement('input');
+    var span = document.createElement('span');
+    var destroy = document.createElement('button');
+    var edit = document.createElement('input');
+
+    li.setAttribute('data-id', item.id );
+
+    if ( item.completed ) {
+      li.className = 'completed';
+    }
+
+    div.className = 'todo';
+
+    toggle.setAttribute('type', 'checkbox');
+    toggle.className = 'toggle';
+    toggle.checked = item.completed;
+
+    span.appendChild( document.createTextNode(item.text) );
+
+    destroy.className = 'destroy';
+    // destroy.appendChild( document.createTextNode('X') );
+
+    edit.setAttribute('type', 'text');
+    edit.className = 'edit';
+
+
+    div.appendChild(toggle);
+    div.appendChild(span);
+    div.appendChild(destroy);
+
+    li.appendChild(div);
+    li.appendChild(edit);
+
+    return li;
   }
 
-  // Filter the tasks array to get only the tasks where completed is false
-  let incompleteTasks = taskList.tasks.filter(task => !task.completed);
-
-  // Return the number of incomplete tasks
-  return incompleteTasks.length;
-}
-
-// Update headings
-document.querySelector('.container:nth-child(1) .heading').textContent = `Today (${countIncompleteTasks(todayTasks)}/${todayTasks.tasks.length})`;
-document.querySelector('.container:nth-child(2) .heading').textContent = `Tomorrow (${countIncompleteTasks(tomorrowTasks)}/${tomorrowTasks.tasks.length})`;
-document.querySelector('.container:nth-child(3) .heading').textContent = `This Week (${countIncompleteTasks(weekTasks)}/${weekTasks.tasks.length})`;
-
-// Assuming tasks is an array of Task objects
-let tasks = [new Task("Task 1", "Description", "2024-06-13", "17:00"), new Task("Task 2", "Description", "2024-06-13", "18:00")];
-
-function toggleTaskCompleted(index) {
-  // Check if index is valid
-  if (index < 0 || index >= tasks.length) {
-    console.error('Invalid argument: index out of range');
-    return;
-  }
-
-  // Toggle the completed property of the task
-  tasks[index].completed = !tasks[index].completed;
-}
-
-// Add event listeners to checkboxes
-for (let i = 0; i < tasks.length; i++) {
-  document.getElementById(`task-${i}`).addEventListener('change', function() {
-    toggleTaskCompleted(i);
+  // Initialization on Dom Ready
+  window.addEventListener('DOMContentLoaded', function() {
+    var app = new App('todo');
   });
-}
+
+})(this);
+

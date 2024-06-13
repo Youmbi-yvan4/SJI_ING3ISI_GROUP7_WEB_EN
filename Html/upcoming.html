@@ -148,6 +148,7 @@
                 <div class="card-body">
                     <!DOCTYPE html>
                     <html>
+
                     <head>
                         <title>Do-Dont App</title>
                         <style>
@@ -155,193 +156,234 @@
                             .task-list {
                                 list-style-type: none;
                             }
+
                             .task {
                                 margin: 10px 0;
                             }
+
                             .completed {
                                 text-decoration: line-through;
                             }
                         </style>
                     </head>
+
                     <body>
                         <html>
 
-    <style>
-        /* Add your CSS here */
-        .container {
-            display: flex;
-            justify-content: space-between;
-        }
-        .task-form-container {
-            flex: 0 0 60%;
-            margin-right: 10px;
-        }
-        .category-form-container {
-            flex: 0 0 40%;
-        }
-        .task-list {
-            list-style-type: none;
-        }
-        .task {
-            margin: 10px 0;
-        }
-        .completed {
-            text-decoration: line-through;
-        }
-        form {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
-        }
-        input[type="text"], textarea, select, input[type="date"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            margin-bottom: 10px;
-        }
-        button[type="submit"] {
-            padding: 10px 20px;
-            background-color: #5C6BC0;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-    <h1>Do-Dont App</h1>
-    <div class="container">
-        <div class="task-form-container">
-            <form id="task-form">
-                <input type="text" id="task-title-input" placeholder="Enter a task title">
-                <textarea id="task-description-input" placeholder="Enter a task description"></textarea>
-                <select id="task-category-input">
-                    <!-- Categories will be dynamically added here -->
-                </select>
-                <input type="date" id="task-due-date-input">
-                <button type="submit">Add Task</button>
-            </form>
-            <ul id="task-list" class="task-list"></ul>
-        </div>
-        <div class="category-form-container" ">
-            <form id="category-form" style="min-height: 315px;">
-                <input type="text" id="category-input" placeholder="Enter a category">
-                <button type="submit">Add Category</button>
-            </form>
-            
-        </div>
-    </div>
-                        <script>
-                            // Add your JavaScript here
-                            var tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-var categories = JSON.parse(localStorage.getItem('categories')) || ['work', 'school', 'home'];
-var currentUser = localStorage.getItem('currentUser');
+                        <style>
+                            /* Add your CSS here */
+                            .container {
+                                display: flex;
+                                justify-content: space-between;
+                            }
 
-function renderTasks() {
-    var taskList = document.getElementById('task-list');
-    taskList.innerHTML = '';
-    tasks.forEach(function(task, index) {
-        var taskItem = document.createElement('li');
-        taskItem.classList.add('task');
-        taskItem.textContent = task.title + ' - ' + task.description + ' - ' + task.category + ' - ' + task.dueDate;
+                            .task-form-container {
+                                flex: 0 0 60%;
+                                margin-right: 10px;
+                            }
 
-        var completeButton = document.createElement('button');
-        completeButton.textContent = 'Mark as completed';
-        completeButton.addEventListener('click', function() {
-            task.completed = !task.completed;
-            localStorage.setItem('tasks', JSON.stringify(tasks));
-            renderTasks();
-        });
-        taskItem.appendChild(completeButton);
+                            .category-form-container {
+                                flex: 0 0 40%;
+                            }
 
-        var deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Delete';
-        deleteButton.addEventListener('click', function() {
-            tasks.splice(index, 1);
-            localStorage.setItem('tasks', JSON.stringify(tasks));
-            renderTasks();
-        });
-        taskItem.appendChild(deleteButton);
+                            .task-list {
+                                list-style-type: none;
+                            }
 
-        var editButton = document.createElement('button');
-        editButton.textContent = 'Edit';
-        editButton.addEventListener('click', function() {
-            var titleInput = document.getElementById('task-title-input');
-            var descriptionInput = document.getElementById('task-description-input');
-            var categoryInput = document.getElementById('task-category-input');
-            var dueDateInput = document.getElementById('task-due-date-input');
+                            .task {
+                                margin: 10px 0;
+                            }
 
-            titleInput.value = task.title;
-            descriptionInput.value = task.description;
-            categoryInput.value = task.category;
-            dueDateInput.value = task.dueDate;
+                            .completed {
+                                text-decoration: line-through;
+                            }
 
-            tasks.splice(index, 1);
-        });
-        taskItem.appendChild(editButton);
+                            form {
+                                background: #fff;
+                                padding: 20px;
+                                border-radius: 8px;
+                                box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+                            }
 
-        taskList.appendChild(taskItem);
-    });
-}
+                            input[type="text"],
+                            textarea,
+                            select,
+                            input[type="date"] {
+                                width: 100%;
+                                padding: 10px;
+                                border: 1px solid #ddd;
+                                border-radius: 4px;
+                                margin-bottom: 10px;
+                            }
 
-function renderCategories() {
-    var categoryInput = document.getElementById('task-category-input');
-    categoryInput.innerHTML = '';
-    categories.forEach(function(category) {
-        var option = document.createElement('option');
-        option.value = category;
-        option.textContent = category;
-        categoryInput.appendChild(option);
-    });
-}
+                            button[type="submit"] {
+                                padding: 10px 20px;
+                                background-color: #5C6BC0;
+                                color: white;
+                                border: none;
+                                border-radius: 4px;
+                                cursor: pointer;
+                            }
 
-document.getElementById('task-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-    var titleInput = document.getElementById('task-title-input');
-    var descriptionInput = document.getElementById('task-description-input');
-    var categoryInput = document.getElementById('task-category-input');
-    var dueDateInput = document.getElementById('task-due-date-input');
+                            .task-list {
+                                width: 100%;
+                                height: 30%;
+                                margin: 0 auto;
+                                list-style-type: none;
+                                padding: 0;
+                                justify-content: space-between;
+                            }
 
-    tasks.push({
-        title: titleInput.value,
-        description: descriptionInput.value,
-        category: categoryInput.value,
-        dueDate: dueDateInput.value,
-        completed: false,
-        user: currentUser
-    });
-    localStorage.setItem('tasks', JSON.stringify(tasks));
+                            .task {
+                                justify-content: space-between;
+                                display: flex;
+                            }
+                        </style>
+                        </head>
 
-    titleInput.value = '';
-    descriptionInput.value = '';
-    dueDateInput.value = '';
+                        <body>
+                            <h1>Do-Dont App</h1>
+                            <div class="container">
+                                <div class="task-form-container">
+                                    <form id="task-form">
+                                        <input type="text" id="task-title-input" placeholder="Enter a task title">
+                                        <textarea id="task-description-input"
+                                            placeholder="Enter a task description"></textarea>
+                                        <select id="task-category-input">
+                                            <!-- Categories will be dynamically added here -->
+                                        </select>
+                                        <input type="date" id="task-due-date-input">
+                                        <button type="submit">Add Task</button>
+                                    </form>
 
-    renderTasks();
-});
+                                </div>
+                                <div class="category-form-container" ">
+            <form id=" category-form" style="min-height: 315px;">
+                                    <input type="text" id="category-input" placeholder="Enter a category">
+                                    <button type="submit">Add Category</button>
+                                    </form>
 
-document.getElementById('category-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-    var categoryInput = document.getElementById('category-input');
+                                </div>
+                            </div>
+                            <ul id="task-list" class="task-list"></ul>
+                            <script>
+                                // Add your JavaScript here
+                                var tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+                                var categories = JSON.parse(localStorage.getItem('categories')) || ['work', 'school', 'home'];
+                                var currentUser = localStorage.getItem('currentUser');
+                                var editIndex = null;
 
-    categories.push(categoryInput.value);
-    localStorage.setItem('categories', JSON.stringify(categories));
+                                renderTasks();
+                                renderCategories();
 
-    categoryInput.value = '';
+                                function renderTasks() {
+                                    var taskList = document.getElementById('task-list');
+                                    taskList.innerHTML = '';
+                                    tasks.forEach(function (task, index) {
+                                        var taskItem = document.createElement('li');
+                                        taskItem.classList.add('task');
+                                        taskItem.textContent = task.title + ' - ' + task.description + ' - ' + task.category + ' - ' + task.dueDate;
 
-    renderCategories();
-});
+                                        var completeButton = document.createElement('i');
+                                        completeButton.classList.add('fas', 'fa-check', task.completed ? 'completed' : 'not-completed');
+                                        completeButton.addEventListener('click', function () {
+                                            task.completed = !task.completed;
+                                            completeButton.classList.toggle('completed');
+                                            localStorage.setItem('tasks', JSON.stringify(tasks));
+                                            renderTasks();
+                                        });
+                                        taskItem.appendChild(completeButton);
 
-renderTasks();
-renderCategories();
+                                        var deleteButton = document.createElement('i');
+                                        deleteButton.classList.add('fas', 'fa-trash-alt');
+                                        deleteButton.addEventListener('click', function () {
+                                            tasks.splice(index, 1);
+                                            localStorage.setItem('tasks', JSON.stringify(tasks));
+                                            renderTasks();
+                                        });
+                                        taskItem.appendChild(deleteButton);
+
+                                        var editButton = document.createElement('i');
+                                        editButton.classList.add('fas', 'fa-edit');
+                                        editButton.addEventListener('click', function () {
+                                            var titleInput = document.getElementById('task-title-input');
+                                            var descriptionInput = document.getElementById('task-description-input');
+                                            var categoryInput = document.getElementById('task-category-input');
+                                            var dueDateInput = document.getElementById('task-due-date-input');
+
+                                            titleInput.value = task.title;
+                                            descriptionInput.value = task.description;
+                                            categoryInput.value = task.category;
+                                            dueDateInput.value = task.dueDate;
+
+                                            editIndex = index;
+                                        });
+                                        taskItem.appendChild(editButton);
+
+                                        taskList.appendChild(taskItem);
+                                    });
+                                }
+
+                                // Rest of the code remains the same...
+
+                                function renderCategories() {
+                                    var categoryInput = document.getElementById('task-category-input');
+                                    categoryInput.innerHTML = '';
+                                    categories.forEach(function (category) {
+                                        var option = document.createElement('option');
+                                        option.value = category;
+                                        option.textContent = category;
+                                        categoryInput.appendChild(option);
+                                    });
+                                }
+
+                                document.getElementById('task-form').addEventListener('submit', function (event) {
+                                    event.preventDefault();
+                                    var titleInput = document.getElementById('task-title-input');
+                                    var descriptionInput = document.getElementById('task-description-input');
+                                    var categoryInput = document.getElementById('task-category-input');
+                                    var dueDateInput = document.getElementById('task-due-date-input');
+
+                                    tasks.push({
+                                        title: titleInput.value,
+                                        description: descriptionInput.value,
+                                        category: categoryInput.value,
+                                        dueDate: dueDateInput.value,
+                                        completed: false,
+                                        user: currentUser
+                                    });
+                                    localStorage.setItem('tasks', JSON.stringify(tasks));
+
+                                    titleInput.value = '';
+                                    descriptionInput.value = '';
+                                    dueDateInput.value = '';
+
+                                    renderTasks();
+                                    renderCategories();
+                                });
+
+                                document.getElementById('category-form').addEventListener('submit', function (event) {
+                                    event.preventDefault();
+                                    var categoryInput = document.getElementById('category-input');
+
+                                    categories.push(categoryInput.value);
+                                    localStorage.setItem('categories', JSON.stringify(categories));
+
+                                    categoryInput.value = '';
+
+                                    renderCategories();
+                                    renderTasks();
+                                });
+
+                                renderTasks();
+                                renderCategories();
 
 
-                        </script>
-                    </body>
-                    </html>
-                    
+                            </script>
+                        </body>
+
+                        </html>
+
                 </div>
             </div>
             <div class="col-md-5 grid-margin stretch-card">

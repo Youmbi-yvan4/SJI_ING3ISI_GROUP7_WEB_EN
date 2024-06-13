@@ -52,6 +52,7 @@ body {
 .home{
     position: relative;
     left: 170px;
+    top: -50px;
     width: calc(95% - 120px);
     justify-content: space-between;
     background: white;

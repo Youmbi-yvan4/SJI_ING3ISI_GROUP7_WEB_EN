@@ -272,6 +272,8 @@
                                 var categories = JSON.parse(localStorage.getItem('categories')) || ['work', 'school', 'home'];
                                 var currentUser = localStorage.getItem('currentUser');
                                 var editIndex = null;
+                                var searchInput = document.getElementById('search-input');
+                                var categorySelect = document.getElementById('category-select');
 
                                 renderTasks();
                                 renderCategories();
@@ -279,7 +281,21 @@
                                 function renderTasks() {
                                     var taskList = document.getElementById('task-list');
                                     taskList.innerHTML = '';
-                                    tasks.forEach(function (task, index) {
+                                    var filteredTasks = tasks;
+                                    if (searchInput.value) {
+                                        filteredTasks = tasks.filter(function (task) {
+                                            return task.title.toLowerCase().includes(searchInput.value.toLowerCase()) ||
+                                                task.description.toLowerCase().includes(searchInput.value.toLowerCase()) ||
+                                                task.category.toLowerCase().includes(searchInput.value.toLowerCase()) ||
+                                                task.dueDate.toLowerCase().includes(searchInput.value.toLowerCase());
+                                        });
+                                    }
+                                    if (categorySelect.value !== 'all') {
+                                        filteredTasks = filteredTasks.filter(function (task) {
+                                            return task.category === categorySelect.value;
+                                        });
+                                    }
+                                    filteredTasks.forEach(function (task, index) {
                                         var taskItem = document.createElement('li');
                                         taskItem.classList.add('task');
                                         taskItem.textContent = task.title + ' - ' + task.description + ' - ' + task.category + ' - ' + task.dueDate;
@@ -297,7 +313,7 @@
                                         var deleteButton = document.createElement('i');
                                         deleteButton.classList.add('fas', 'fa-trash-alt');
                                         deleteButton.addEventListener('click', function () {
-                                            tasks.splice(index, 1);
+                                            tasks.splice(tasks.indexOf(task), 1);
                                             localStorage.setItem('tasks', JSON.stringify(tasks));
                                             renderTasks();
                                         });
@@ -316,15 +332,13 @@
                                             categoryInput.value = task.category;
                                             dueDateInput.value = task.dueDate;
 
-                                            editIndex = index;
+                                            editIndex = tasks.indexOf(task);
                                         });
                                         taskItem.appendChild(editButton);
 
                                         taskList.appendChild(taskItem);
                                     });
                                 }
-
-                                // Rest of the code remains the same...
 
                                 function renderCategories() {
                                     var categoryInput = document.getElementById('task-category-input');
@@ -334,6 +348,17 @@
                                         option.value = category;
                                         option.textContent = category;
                                         categoryInput.appendChild(option);
+                                    });
+                                    categorySelect.innerHTML = '';
+                                    var allOption = document.createElement('option');
+                                    allOption.value = 'all';
+                                    allOption.textContent = 'All';
+                                    categorySelect.appendChild(allOption);
+                                    categories.forEach(function (category) {
+                                        var option = document.createElement('option');
+                                        option.value = category;
+                                        option.textContent = category;
+                                        categorySelect.appendChild(option);
                                     });
                                 }
 
@@ -370,14 +395,41 @@
                                     localStorage.setItem('categories', JSON.stringify(categories));
 
                                     categoryInput.value = '';
+                                        renderCategories();
+    renderTasks();
+});
 
-                                    renderCategories();
-                                    renderTasks();
-                                });
+searchInput.addEventListener('input', function () {
+    renderTasks();
+});
 
-                                renderTasks();
-                                renderCategories();
+categorySelect.addEventListener('change', function () {
+    renderTasks();
+});
 
+document.getElementById('edit-form').addEventListener('submit', function (event) {
+    event.preventDefault();
+    var titleInput = document.getElementById('task-title-input');
+    var descriptionInput = document.getElementById('task-description-input');
+    var categoryInput = document.getElementById('task-category-input');
+    var dueDateInput = document.getElementById('task-due-date-input');
+
+    tasks[editIndex].title = titleInput.value;
+    tasks[editIndex].description = descriptionInput.value;
+    tasks[editIndex].category = categoryInput.value;
+    tasks[editIndex].dueDate = dueDateInput.value;
+
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+
+    titleInput.value = '';
+    descriptionInput.value = '';
+    dueDateInput.value = '';
+
+    editIndex = null;
+
+    renderTasks();
+    renderCategories();
+});
 
                             </script>
                         </body>
